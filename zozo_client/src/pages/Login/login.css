@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+  --header-title-gradient-start: #ec4997;
+  --header-title-gradient-end: #f6ad55;
+  --header-link-bg: #dd6b20;
+  --header-signup-bg: #9f7aea;
+  --main-paragraph-color: #cccccc;
+  --cta-button-gradient-start: #ec4899;
+  --cta-button-gradient-end: #fb923c;
+  --cta-button-hover-gradient-start: #f6e05e;
+  --cta-button-hover-gradient-end: #ec4997;
+  --input-border-color: #ccc;
+  --input-focus-border-color: #ec4899;
+  --error-color: #ff6b6b;
+  --container-bg: rgba(0, 0, 0, 0.75);
+  --input-bg: rgba(255, 255, 255, 0.1);
+}
+
+.login-center-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  background-image: url('../../assets/images/loveBgm3.jpg')!important; 
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  backdrop-filter: blur(8px);
+}
+
+.login-container {
+  background: var(--container-bg);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+}
+
+.welcome-text {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  margin-top: 0%;
+  background: linear-gradient(to right, var(--header-title-gradient-start), var(--header-title-gradient-end));
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  font-family: 'Dancing Script', cursive;
+}
+
+.input-container {
+  margin-bottom: 1.5rem;
+}
+
+.validation-error {
+  color: var(--error-color);
+  font-size: 0.875rem;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.login-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--input-border-color);
+  background: var(--input-bg);
+  color: white;
+  outline: none;
+  transition: border-color 0.3s, background-color 0.3s;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.login-input:focus {
+  border-color: var(--input-focus-border-color);
+  &::placeholder {
+    color: var(--header-signup-bg);
+}
+}
+
+.input-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgb(183, 170, 170) !important;
+  border-bottom:none !important
+}
+
+.forgot-password-text {
+  text-align: right;
+  margin-bottom: 1.5rem;
+}
+
+.forgot-password-link {
+  color: var(--header-link-bg);
+  text-decoration: none;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+}
+
+.login-button {
+  background: linear-gradient(to right, var(--cta-button-gradient-start), var(--cta-button-gradient-end));
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: background 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.login-button:hover {
+  background: linear-gradient(to right, var(--cta-button-hover-gradient-start), var(--cta-button-hover-gradient-end));
+}
+
+.login-text {
+  text-align: center;
+  margin-top: 1.5rem !important;
+  font-size: 0.875rem;
+  color: var(--header-link-bg);
+}
+
+.login-link {
+  color: var(--header-signup-bg);
+  text-decoration: none;
+  margin-left: 0.5rem;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}

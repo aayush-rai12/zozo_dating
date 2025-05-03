@@ -1,0 +1,15 @@
+.dashboard_welcome {
+  margin-bottom: 30px;
+}
+
+.dashboard_welcome h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.welcome_subtext {
+  color: var(--text-medium);
+  font-size: 16px;
+}

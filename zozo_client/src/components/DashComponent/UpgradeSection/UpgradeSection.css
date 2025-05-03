@@ -1,0 +1,41 @@
+.dashboard_upgrade {
+  background: linear-gradient(135deg, var(--secondary-color), var(--secondary-light));
+  padding: 30px;
+  border-radius: var(--border-radius);
+  text-align: center;
+  color: white;
+  box-shadow: var(--box-shadow);
+}
+
+.upgrade_content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.dashboard_upgrade h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.dashboard_upgrade p {
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.dashboard_upgrade_button {
+  background: var(--white);
+  color: var(--secondary-color);
+  padding: 14px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard_upgrade_button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}

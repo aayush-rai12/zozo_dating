@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+:root {
+  --header-title-gradient-start: #ec4997;
+  --header-title-gradient-end: #f6ad55;
+  --header-link-bg: #dd6b20;
+  --header-signup-bg: #9f7aea;
+  --main-paragraph-color: #cccccc;
+  --cta-button-gradient-start: #ec4899;
+  --cta-button-gradient-end: #fb923c;
+  --cta-button-hover-gradient-start: #f6e05e;
+  --cta-button-hover-gradient-end: #ec4997;
+  --input-border-color: #ccc;
+  --input-focus-border-color: #ec4899;
+  --error-color: #ff6b6b;
+  --container-bg: rgba(0, 0, 0, 0.75);
+  --input-bg: rgba(255, 255, 255, 0.1);
+  --photo-hover-border-color: #ec4899;
+  --button-bg-color: #e53e3e;
+  --add-photo-bg: #edf2f7;
+  --add-photo-hover-bg: #d1d5db;
+  --submit-button-bg: linear-gradient(to right, var(--cta-button-gradient-start), var(--cta-button-gradient-end));
+  --submit-button-hover-bg: linear-gradient(to right, var(--cta-button-hover-gradient-start), var(--cta-button-hover-gradient-end));
+  --form-label-color: #b7aaa9;
+}
+
+.pro_heading{
+  font-family: 'Dancing Script', cursive;
+  color: var(--header-title-gradient-start);
+  margin-top: -9px;
+}
+
+.form-control{
+  border: 1px solid var(--input-border-color);
+  background: var(--input-bg);
+  color: var(--header-signup-bg);
+  outline: none;
+
+}
+
+.form-control:focus {
+  border-color: var(--input-focus-border-color);
+  &::placeholder {
+    color: var(--header-signup-bg);
+}
+box-shadow:none;
+}
+
+.form-control::placeholder {
+  color: var(--cta-button-gradient-start);
+}
+
+.photo-grid .photo {
+  position: relative;
+  border: 2px dashed var(--photo-border-color);
+  border-radius: 8px;
+  z-index: 2;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+.photo-grid .photo:hover {
+  border-color: var(--photo-hover-border-color);
+  transform: scale(1.05);
+}
+/* Styling for Images in Photo Grid */
+.photo-grid .photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+.photo-grid .photo button {
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  background-color: #e53e3e;
+  color: #fff;
+  border: none;
+  border-radius: 50% 0;
+  padding: 0px 4px;
+  cursor: pointer;
+  outline: none;
+}
+.photo-grid .add-photo {
+  background-color: #edf2f7;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+}
+.photo-grid .add-photo i {
+  font-size: 24px;
+}
+.hidden {
+  display: none;
+}
+/* When Photo Has an Image */
+.photo.has-image {
+  border: 2px solid var(--header-title-gradient-start);
+}
+button:focus {
+  outline: none;
+}
+.form-group {
+  margin-bottom: 0.2rem;
+}
+/* Form Label */
+label {
+  margin-bottom: 0.5rem;
+  /* color: var(--form-label-color); */
+  font-weight: 600;
+}
+
+.photo_text_guide {
+  font-size: 0.92rem;
+  color: var(--main-paragraph-color);
+}
+
+.form_radio_input {
+  margin-right: 4px;
+  cursor: pointer;}
+
+/* Submit Button Styling */
+.submit_button {
+  background: var(--submit-button-bg);
+  color: white;
+  padding: 0.75rem;
+  border-radius: 8px;
+  width: 25%;
+  margin: 0.9rem;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Submit Button Hover Effect */
+.submit_button:hover {
+  background: var(--submit-button-hover-bg);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}

@@ -1,0 +1,32 @@
+.nav_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #9c5035;
+  padding: 15px 30px;
+  color: white;
+}
+
+.logo a {
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+}
+
+.header_nav_links a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+}
+
+.header_nav_links a:hover {
+  text-decoration: underline;
+}
+/* for header sticky */
+/* .nav_header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+} */

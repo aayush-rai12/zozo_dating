@@ -1,0 +1,57 @@
+.dashboard_ai_planner {
+  background: linear-gradient(135deg, #f0f7ff, #e5f4ff);
+  padding: 25px;
+  border-radius: var(--border-radius);
+  margin-bottom: 30px;
+  color: #0277bd;
+  font-size: 16px;
+  box-shadow: var(--box-shadow);
+  border: 1px solid #d0e3ff;
+}
+
+.dashboard_ai_planner h3 {
+  margin-bottom: 15px;
+  color: #025a9b;
+}
+
+.dashboard_ai_planner p {
+  margin-bottom: 20px;
+}
+
+.dashboard_ai_planner strong {
+  font-weight: 600;
+}
+
+.ai_actions {
+  display: flex;
+  gap: 15px;
+}
+
+.ai_accept, .ai_regenerate {
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+}
+
+.ai_accept {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.ai_accept:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.ai_regenerate {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.ai_regenerate:hover {
+  background-color: rgba(126, 91, 239, 0.1);
+}

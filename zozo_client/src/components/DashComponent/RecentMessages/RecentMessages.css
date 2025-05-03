@@ -1,0 +1,161 @@
+.dashboard_bottom_section {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.dashboard_recent_messages,
+.dashboard_mood_suggestions {
+  background: var(--white);
+  padding: 25px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  flex: 1;
+  border: 1px solid #f0f0f0;
+}
+
+.dashboard_recent_messages {
+  flex: 1.2;
+}
+
+.dashboard_recent_messages h3,
+.dashboard_mood_suggestions h3 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: var(--text-dark);
+}
+
+.dashboard_recent_messages ul {
+  list-style: none;
+}
+
+.dashboard_recent_messages li {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: var(--transition);
+}
+
+.dashboard_recent_messages li:last-child {
+  border-bottom: none;
+}
+
+.dashboard_recent_messages li:hover {
+  background-color: #fafafa;
+}
+
+.dashboard_recent_messages li img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.message_content {
+  flex: 1;
+}
+
+.sender {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 3px;
+  color: var(--text-dark);
+}
+
+.message_text {
+  font-size: 14px;
+  color: var(--text-medium);
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.message_time {
+  font-size: 12px;
+  color: var(--text-light);
+  align-self: flex-start;
+}
+
+/* Mood Based Suggestion */
+
+.suggestions_list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.suggestion_user {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  background-color: #fafafa;
+  transition: var(--transition);
+}
+
+.suggestion_user:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+.suggestion_user img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.suggestion_info {
+  flex: 1;
+}
+
+.suggestion_info .user_name {
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.suggestion_info .user_details {
+  font-size: 13px;
+  color: var(--text-medium);
+  margin-bottom: 8px;
+}
+
+.interests {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.interests span {
+  background-color: #e0e0ff;
+  color: var(--primary-dark);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.like_button {
+  background-color: var(--white);
+  color: var(--secondary-color);
+  border: 1px solid #ffd6ec;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.like_button:hover {
+  background-color: var(--secondary-color);
+  color: white;
+  transform: scale(1.1);
+}

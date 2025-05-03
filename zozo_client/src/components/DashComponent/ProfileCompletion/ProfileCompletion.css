@@ -1,0 +1,82 @@
+.profile_completion {
+  background: var(--white);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  margin-bottom: 30px;
+}
+
+.completion_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.completion_header h3 {
+  font-size: 18px;
+  color: var(--text-dark);
+}
+
+.completion_percent {
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 18px;
+}
+
+.progress_meter {
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.progress_fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.completion_tips p {
+  color: var(--text-medium);
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.todo_list {
+  list-style: none;
+  padding: 0;
+}
+
+.todo_list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: var(--text-light);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.todo_list li:last-child {
+  border-bottom: none;
+}
+
+.todo_list li.completed {
+  color: var(--text-medium);
+}
+
+.todo_list li.completed:before {
+  content: "✓";
+  color: var(--success);
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.todo_list li:not(.completed):before {
+  content: "•";
+  color: var(--warning);
+  margin-right: 10px;
+  font-weight: bold;
+}

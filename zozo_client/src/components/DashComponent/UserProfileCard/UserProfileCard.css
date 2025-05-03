@@ -1,0 +1,78 @@
+.dashboard_user_card {
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  margin-bottom: 30px;
+}
+
+.user_card_left {
+  display: flex;
+  align-items: center;
+}
+
+.user_img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px;
+  border: 3px solid var(--primary-color);
+}
+
+.user_info h3 {
+  font-size: 22px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.verified_badge {
+  color: var(--primary-color);
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+.user_details {
+  color: var(--text-medium);
+  font-size: 15px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.location_icon {
+  margin-right: 3px;
+  font-size: 12px;
+}
+
+.user_mood {
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.mood_highlight {
+  color: var(--primary-dark);
+  font-weight: 500;
+}
+
+.dashboard_edit_profile {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.dashboard_edit_profile:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
