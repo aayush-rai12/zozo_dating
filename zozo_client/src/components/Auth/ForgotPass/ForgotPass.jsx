@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./forgotPass.css";
 
+  // background-image: url('../../../../assets/images/loveBgm1.jpg')!important; 
+  // import image from  '../../../../src/assets/images/loveBgm1.jpg';
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 const PASSWORD_MIN_LENGTH = 6;
 

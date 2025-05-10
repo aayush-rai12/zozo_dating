@@ -22,7 +22,7 @@ const Register = () => {
 
   const handleInputChange = (e, setter, setError) => {
     setter(e.target.value);
-    console.log(e.target.value);
+    console.log('handle changes',e.target.value);
     setError("");
   };
 

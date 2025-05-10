@@ -30,7 +30,10 @@
 nav ul {
   list-style: none;
 }
-
+.dashboard_nav_item a {
+  text-decoration: none;
+  color: var(--white);
+}
 .dashboard_nav_item {
   padding: 12px 15px;
   margin-bottom: 8px;

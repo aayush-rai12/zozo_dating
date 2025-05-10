@@ -1,156 +1,263 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;500;600&display=swap');
+
 :root {
-  --header-title-gradient-start: #ec4997;
-  --header-title-gradient-end: #f6ad55;
-  --header-link-bg: #dd6b20;
-  --header-signup-bg: #9f7aea;
-  --main-paragraph-color: #cccccc;
-  --cta-button-gradient-start: #ec4899;
-  --cta-button-gradient-end: #fb923c;
-  --cta-button-hover-gradient-start: #f6e05e;
-  --cta-button-hover-gradient-end: #ec4997;
-  --input-border-color: #ccc;
-  --input-focus-border-color: #ec4899;
-  --error-color: #ff6b6b;
-  --container-bg: rgba(0, 0, 0, 0.75);
-  --input-bg: rgba(255, 255, 255, 0.1);
-  --photo-hover-border-color: #ec4899;
-  --button-bg-color: #e53e3e;
-  --add-photo-bg: #edf2f7;
-  --add-photo-hover-bg: #d1d5db;
-  --submit-button-bg: linear-gradient(to right, var(--cta-button-gradient-start), var(--cta-button-gradient-end));
-  --submit-button-hover-bg: linear-gradient(to right, var(--cta-button-hover-gradient-start), var(--cta-button-hover-gradient-end));
-  --form-label-color: #b7aaa9;
+  /* Primary Colors */
+  --primary: #FF6B6B;
+  --primary-light: #FF8E8E;
+  --primary-dark: #E05555;
+  
+  /* Secondary Colors */
+  --secondary: #6B6BFF;
+  --secondary-light: #8E8EFF;
+  --secondary-dark: #5555E0;
+  
+  /* Background & Text */
+  --bg-light: #FFFFFF;
+  --bg-dark: #2D3748;
+  --text-light: #FFFFFF;
+  --text-dark: #2D3748;
+  --text-muted: #718096;
+  
+  /* Accents */
+  --accent-pink: #FF6B9E;
+  --accent-purple: #9E6BFF;
+  --accent-blue: #6B9EFF;
+  
+  /* Form Elements */
+  --input-border: #E2E8F0;
+  --input-focus: #9E6BFF;
+  --input-bg: #F8FAFC;
+  --error-color: #E53E3E;
+  
+  /* Buttons */
+  --btn-primary-bg: linear-gradient(135deg, var(--primary) 0%, var(--accent-pink) 100%);
+  --btn-primary-hover: linear-gradient(135deg, var(--primary-dark) 0%, #FF4D88 100%);
+  --btn-secondary-bg: var(--secondary);
+  --btn-secondary-hover: var(--secondary-dark);
+  
+  /* Photo Upload */
+  --photo-border: #CBD5E0;
+  --photo-hover: var(--accent-purple);
+  --photo-bg: #EDF2F7;
+  --photo-remove-bg: var(--error-color);
 }
 
-.pro_heading{
+/* Base Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #F7FAFC;
+}
+
+.container_profile_details {
+  background-color: #F7FAFC;
+}
+
+.inside_container {
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.pro_heading {
   font-family: 'Dancing Script', cursive;
-  color: var(--header-title-gradient-start);
-  margin-top: -9px;
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent-pink) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 1.5rem !important;
 }
 
-.form-control{
-  border: 1px solid var(--input-border-color);
-  background: var(--input-bg);
-  color: var(--header-signup-bg);
+/* Form Elements */
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-dark);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.form-control, .form-select {
+  border: 1px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--text-dark);
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 0.2rem rgba(158, 107, 255, 0.25);
   outline: none;
-
-}
-
-.form-control:focus {
-  border-color: var(--input-focus-border-color);
-  &::placeholder {
-    color: var(--header-signup-bg);
-}
-box-shadow:none;
 }
 
 .form-control::placeholder {
-  color: var(--cta-button-gradient-start);
+  color: #A0AEC0;
+  opacity: 1;
 }
 
-.photo-grid .photo {
+/* Radio Buttons */
+.btn-group-toggle .btn {
+  font-size: 0.85rem;
+  padding: 0.5rem;
+  color: var(--text-dark);
+  border-color: var(--input-border);
+}
+
+.btn-group-toggle .btn.active {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.btn-group-toggle .btn:hover:not(.active) {
+  background-color: var(--input-bg);
+}
+
+/* Checkbox */
+.form-check-input {
+  margin-top: 0.2rem;
+}
+
+.form-check-input:checked {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.form-check-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Photo Upload */
+.photo-grid {
+  margin-bottom: 1rem;
+}
+
+.photo {
   position: relative;
-  border: 2px dashed var(--photo-border-color);
+  height: 120px;
   border-radius: 8px;
-  z-index: 2;
   overflow: hidden;
+  transition: all 0.3s ease;
   cursor: pointer;
-  transition: border-color 0.3s ease, transform 0.3s ease;
 }
-.photo-grid .photo:hover {
-  border-color: var(--photo-hover-border-color);
-  transform: scale(1.05);
+
+.add-photo {
+  background-color: var(--photo-bg);
+  border: 2px dashed var(--photo-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
 }
-/* Styling for Images in Photo Grid */
-.photo-grid .photo img {
+
+.add-photo i {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-muted);
+}
+
+.upload-placeholder{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.add-photo span {
+  font-size: 0.75rem;
+}
+
+.has-image {
+  border: 2px solid var(--primary);
+}
+
+.photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
 }
-.photo-grid .photo button {
+
+.remove-photo-btn {
   position: absolute;
-  top: 1px;
-  right: 2px;
-  background-color: #e53e3e;
-  color: #fff;
+  top: 0;
+  right: 0;
+  background-color: var(--photo-remove-bg);
+  color: white;
   border: none;
-  border-radius: 50% 0;
-  padding: 0px 4px;
-  cursor: pointer;
-  outline: none;
-}
-.photo-grid .add-photo {
-  background-color: #edf2f7;
-  color: #4a5568;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 150px;
-  border: 2px dashed #d1d5db;
-  border-radius: 8px;
+  border-radius: 0 0 0 8px;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 0.2s;
 }
-.photo-grid .add-photo i {
-  font-size: 24px;
+
+.remove-photo-btn:hover {
+  opacity: 1;
 }
-.hidden {
-  display: none;
+
+.photo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-/* When Photo Has an Image */
-.photo.has-image {
-  border: 2px solid var(--header-title-gradient-start);
-}
-button:focus {
-  outline: none;
-}
-.form-group {
-  margin-bottom: 0.2rem;
-}
-/* Form Label */
-label {
-  margin-bottom: 0.5rem;
-  /* color: var(--form-label-color); */
-  font-weight: 600;
+
+/* Error Messages */
+.errors_label {
+  color: var(--error-color);
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  display: block;
 }
 
 .photo_text_guide {
-  font-size: 0.92rem;
-  color: var(--main-paragraph-color);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
 }
 
-.form_radio_input {
-  margin-right: 4px;
-  cursor: pointer;}
-
-/* Submit Button Styling */
+/* Submit Button */
 .submit_button {
-  background: var(--submit-button-bg);
+  background: var(--btn-primary-bg);
   color: white;
-  padding: 0.75rem;
-  border-radius: 8px;
-  width: 25%;
-  margin: 0.9rem;
-  cursor: pointer;
   border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
   font-size: 1rem;
-  font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
 }
 
-/* Submit Button Hover Effect */
 .submit_button:hover {
-  background: var(--submit-button-hover-bg);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+  background: var(--btn-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .pro_heading {
+    font-size: 2rem;
   }
-  50% {
-    transform: translateY(-20px);
+  
+  .photo {
+    height: 100px;
+  }
+  
+  .submit_button {
+    width: 100%;
   }
 }

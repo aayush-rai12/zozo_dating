@@ -10,7 +10,7 @@ body, html {
   align-items: center;
   height: 100vh;
   color: #333;
-  background-image: url('../../assets/images/loveBgm3.jpg')!important; 
+  background-image: url('../../../assets/images/loveBgm3.jpg')!important; 
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
