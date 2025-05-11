@@ -1,0 +1,9 @@
+# Node.js dependencies
+node_modules/
+
+
+# Environment variables
+.env
+
+# Package lock file (optional, can be kept if needed)
+package-lock.json 
