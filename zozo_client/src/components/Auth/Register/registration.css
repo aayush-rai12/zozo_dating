@@ -62,11 +62,30 @@ body, html {
   /* margin-bottom: 10px; */
 }
 .reg-input-container {
-  width: 70%;
+  width: auto;
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
 }
+
+.register-message {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.register-message.success {
+  color: green;
+  background-color: #e6fbe6;
+}
+
+.register-message.error {
+  color: red;
+  background-color: #fdeaea;
+}
+
 
 .half-width {
   width: 48%;
@@ -119,6 +138,8 @@ body, html {
   margin-bottom: 10px;
   background: linear-gradient(to right, var(--cta-button-gradient-start), var(--cta-button-gradient-end));
   transition: background 0.3s ease, outline 0.3s ease, outline-offset 0.3s ease;
+  position: relative;
+  left: 27%;
 }
 
 /* Hover state styling */

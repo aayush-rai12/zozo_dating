@@ -5,8 +5,6 @@ import dotenv from "dotenv";
 
 // User registration controller
 export const registerUser = async (req, res) => {
-  console.log("User registration route hit");
-  console.log("Auth route hit");
   console.log("User registration request received");
   const { firstName, lastName, email, password } = req.body;
   console.log("User registration data:", req.body);
@@ -33,7 +31,7 @@ export const registerUser = async (req, res) => {
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "3600", // 1 hour
     });
-    console.log("pahuch gaya");
+    console.log("pahuch gaya frontend se");
     //  Send response
     return res.status(200).json({
       success: true,
@@ -58,7 +56,7 @@ export const loginUser = async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-    console.log(user);
+    console.log(user || 'User not found');
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
@@ -78,7 +76,7 @@ export const loginUser = async (req, res) => {
     console.log("Token generated:", token);
 
     return res.status(200).json({
-      success: true,
+      success: "success",
       message: "User logged in successfully",
       user: {
         user_Id: user._id,
@@ -91,6 +89,6 @@ export const loginUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Error during login:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ success:"error", message: "Internal server error" });
   }
 };

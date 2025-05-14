@@ -1,4 +1,3 @@
-// src/config/db.js
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
@@ -11,15 +10,15 @@ mongoose.connect(mongoURL);
 const db = mongoose.connection;
 
 db.on("connected", () => {
-  console.log("✅ Connected to MongoDB server");
+  console.log("Connected to MongoDB server");
 });
 
 db.on("error", (err) => {
-  console.error("❌ MongoDB connection error:", err);
+  console.error("MongoDB connection error:", err);
 });
 
 db.on("disconnected", () => {
-  console.log("⚠️ MongoDB disconnected.");
+  console.log("MongoDB disconnected.");
 });
 
 export default mongoose;

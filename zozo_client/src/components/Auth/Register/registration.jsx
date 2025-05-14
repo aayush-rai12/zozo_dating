@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Registration.css";
-
+import apiClient from "../../../utils/apiClient";
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 const PASSWORD_MIN_LENGTH = 6;
 
@@ -19,63 +19,111 @@ const Register = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e, setter, setError) => {
     setter(e.target.value);
-    console.log('handle changes',e.target.value);
+    console.log("handle changes", e.target.value);
     setError("");
   };
 
-  const validateDetails = (e) => {
-    e.preventDefault();
+  const validateDetails = () => {
+    let isValid = true;
 
-    const errors = [];
-
-    if (firstName === "") {
-      errors.push("Enter your first name please.");
-      setFirstNameError("Enter your first name please.");
+    if (firstName.trim() === "") {
+      setFirstNameError("Enter your first name.");
+      isValid = false;
     } else {
       setFirstNameError("");
     }
 
-    if (lastName === "") {
-      errors.push("Enter your last name please.");
-      setLastNameError("Enter your last name please.");
+    if (lastName.trim() === "") {
+      setLastNameError("Enter your last name.");
+      isValid = false;
     } else {
       setLastNameError("");
     }
 
     if (!isEmailValid(email)) {
-      errors.push("Please enter a valid email address.");
       setEmailError("Please enter a valid email address.");
+      isValid = false;
     } else {
       setEmailError("");
     }
 
     if (!isPasswordValid(password)) {
-      errors.push(
+      setPasswordError(
         `Password must be at least ${PASSWORD_MIN_LENGTH} characters.`
       );
-      setPasswordError(
-        `Password at least ${PASSWORD_MIN_LENGTH} characters.`
-      );
+      isValid = false;
     } else {
       setPasswordError("");
     }
 
     if (password !== confirmPassword) {
-      errors.push("Passwords do not match.");
       setConfirmPasswordError("Passwords do not match.");
+      isValid = false;
     } else {
       setConfirmPasswordError("");
     }
 
-    if (errors.length === 0) {
-      var formData = { firstName, lastName, email, password, confirmPassword };
-      console.log(formData);
-      // Perform the form submission logic here
-    } else {
-      console.log(errors.join("\n"));
+    return isValid;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const isValid = validateDetails();
+    if (!isValid) return;
+
+    try {
+      const userRegistrationData = {
+        firstName,
+        lastName,
+        email,
+        password,
+      };
+
+      const response = await apiClient.post(
+        "user/register",
+        userRegistrationData
+      );
+      console.log(
+        "Registration response:",
+        response.data
+      )
+      // Set success message
+      setMessage(response?.data?.message || "User registered successfully!");
+      setMessageType("success");
+
+      // Optional: Clear form fields after success
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+
+      // Optional: Hide message after 3 seconds AND  Redirect to login
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+        navigate("/login");
+      }, 2500);
+    } catch (error) {
+      setMessage(
+        error.response?.data?.message ||
+          "Registration failed. Please try again."
+      );
+      setMessageType("error");
+
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 3000);
     }
   };
 
@@ -83,80 +131,85 @@ const Register = () => {
     <div className="reg-center-container">
       <div className="register-container">
         <h1 className="register-welcome-text">Welcome to Zozo</h1>
-        <div className="flex-container">
-          <div className="half-input-container half-width">
-            <label className="input-label">First Name</label>
-            <input
-              type="text"
-              className="register-input"
-              placeholder="First Name"
-              value={firstName}
-              onChange={(e) =>
-                handleInputChange(e, setFirstName, setFirstNameError)
-              }
-            />
-            <span className="validation-error">{firstNameError}</span>
-          </div>
-          <div className="half-input-container half-width">
-            <label className="input-label">Last Name</label>
-            <input
-              type="text"
-              className="register-input"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) =>
-                handleInputChange(e, setLastName, setLastNameError)
-              }
-            />
-            <span className="validation-error">{lastNameError}</span>
-          </div>
-        </div>
-        <div className="reg-input-container">
-          <label className="input-label">User Email</label>
-          <input
-            type="email"
-            className="register-input"
-            placeholder="zozo@gmail.com"
-            value={email}
-            onChange={(e) => handleInputChange(e, setEmail, setEmailError)}
-          />
-          <span className="validation-error">{emailError}</span>
-        </div>
-        <div className="reg-input-main_container">
-          <div className="reg-input-container">
-            <label className="input-label">Password</label>
-            <input
-              type="password"
-              className="register-input"
-              placeholder="Password"
-              value={password}
-              onChange={(e) =>
-                handleInputChange(e, setPassword, setPasswordError)
-              }
-            />
-            <span className="validation-error">{passwordError}</span>
+        <form className="register-form" onSubmit={handleSubmit}>
+          <div className="flex-container">
+            <div className="half-input-container half-width">
+              <label className="input-label">First Name</label>
+              <input
+                type="text"
+                className="register-input"
+                placeholder="First Name"
+                value={firstName}
+                onChange={(e) =>
+                  handleInputChange(e, setFirstName, setFirstNameError)
+                }
+              />
+              <span className="validation-error">{firstNameError}</span>
+            </div>
+            <div className="half-input-container half-width">
+              <label className="input-label">Last Name</label>
+              <input
+                type="text"
+                className="register-input"
+                placeholder="Last Name"
+                value={lastName}
+                onChange={(e) =>
+                  handleInputChange(e, setLastName, setLastNameError)
+                }
+              />
+              <span className="validation-error">{lastNameError}</span>
+            </div>
           </div>
           <div className="reg-input-container">
-            <label className="input-label">Confirm Password</label>
+            <label className="input-label">User Email</label>
             <input
-              type="password"
+              type="email"
               className="register-input"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) =>
-                handleInputChange(
-                  e,
-                  setConfirmPassword,
-                  setConfirmPasswordError
-                )
-              }
+              placeholder="zozo@gmail.com"
+              value={email}
+              onChange={(e) => handleInputChange(e, setEmail, setEmailError)}
             />
+            <span className="validation-error">{emailError}</span>
           </div>
-        </div>
-        <span className="validation-error">{confirmPasswordError}</span>
-        <button className="register-button" onClick={validateDetails}>
-          Create Account
-        </button>
+          <div className="reg-input-main_container">
+            <div className="reg-input-container">
+              <label className="input-label">Password</label>
+              <input
+                type="password"
+                className="register-input"
+                placeholder="Password"
+                value={password}
+                onChange={(e) =>
+                  handleInputChange(e, setPassword, setPasswordError)
+                }
+              />
+              <span className="validation-error">{passwordError}</span>
+            </div>
+            <div className="reg-input-container">
+              <label className="input-label">Confirm Password</label>
+              <input
+                type="password"
+                className="register-input"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) =>
+                  handleInputChange(
+                    e,
+                    setConfirmPassword,
+                    setConfirmPasswordError
+                  )
+                }
+              />
+            </div>
+          </div>
+          <span className="validation-error">{confirmPasswordError}</span>
+          <button className="register-button" type="submit">
+            Create Account
+          </button>
+          {message && (
+            <div className={`register-message ${messageType}`}>{message}</div>
+          )}
+        </form>
         <p className="login-text">
           Already have an account?{" "}
           <Link to="/login" className="login-link">
