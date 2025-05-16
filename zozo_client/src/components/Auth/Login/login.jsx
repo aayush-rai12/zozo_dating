@@ -42,18 +42,16 @@ const Login = () => {
         email: email,
         password: password,
       };
-      console.log(user);
       try {
-        console.log(user);
         const response = await apiClient.post("/user/login", user);
-        console.log(response.data.success);
         if (response?.data?.message) {
           setMessage(response?.data?.message);
           setMessageType("success");
-        }
-        setTimeout(() => {
           localStorage.setItem("token", response?.data?.token);
           localStorage.setItem("user", JSON.stringify(response?.data?.user));
+        }
+        setTimeout(() => {
+         
           setMessage("");
           setMessageType("");
           navigate("/userProfile");

@@ -58,7 +58,7 @@ body {
 }
 
 .pro_heading {
-  font-family: 'Dancing Script', cursive;
+  font-family: '', ;
   font-size: 2.5rem;
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent-pink) 100%);
   -webkit-background-clip: text;
@@ -103,6 +103,7 @@ label {
 
 /* Radio Buttons */
 .btn-group-toggle .btn {
+  border-radius: 8px!important;
   font-size: 0.85rem;
   padding: 0.5rem;
   color: var(--text-dark);
@@ -135,13 +136,11 @@ label {
 }
 
 /* Photo Upload */
-.photo-grid {
-  margin-bottom: 1rem;
-}
+
 
 .photo {
   position: relative;
-  height: 120px;
+  height: 10rem;
   border-radius: 8px;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -260,4 +259,12 @@ label {
   .submit_button {
     width: 100%;
   }
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+.btn-outline-secondary{
+  background-color: var(--input-bg);
 }

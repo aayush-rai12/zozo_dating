@@ -83,12 +83,31 @@ export const loginUser = async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        token,
+        expiresIn: 3600,
       },
-      token,
-      expiresIn: 3600,
     });
   } catch (error) {
     console.error("Error during login:", error);
     return res.status(500).json({ success:"error", message: "Internal server error" });
+  }
+};
+
+//userDetails
+export const userDetails = async(req, res) => {
+  try {
+    // For multiple files, use req.files; for single file, use req.file
+    console.log("userDetails body:", req.body);
+    console.log("userDetails files:", req.files); // ✅ for multiple files
+
+    // For debugging, return what you received
+    return res.status(200).json({
+      body: req.body,
+      files: req.files,
+      message: "Received user details"
+    });
+  } catch (error) {
+    console.error("Error in userDetails:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

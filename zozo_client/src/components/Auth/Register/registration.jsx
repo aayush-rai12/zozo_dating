@@ -28,7 +28,6 @@ const Register = () => {
 
   const handleInputChange = (e, setter, setError) => {
     setter(e.target.value);
-    console.log("handle changes", e.target.value);
     setError("");
   };
 
@@ -92,10 +91,6 @@ const Register = () => {
         "user/register",
         userRegistrationData
       );
-      console.log(
-        "Registration response:",
-        response.data
-      )
       // Set success message
       setMessage(response?.data?.message || "User registered successfully!");
       setMessageType("success");
