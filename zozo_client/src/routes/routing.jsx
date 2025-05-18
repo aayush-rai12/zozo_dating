@@ -7,7 +7,7 @@ import {
 import Home from "../pages/Home/home";
 import Login from "../components/Auth/Login/login";
 import Register from "../components/Auth/Register/registration";
-import UserProfile from "../components/UserProfile/profileDetails";
+import UserProfile from "../components/UserProfileDetails/profileDetails";
 import ForgotPass from "../components/Auth/ForgotPass/ForgotPass";
 import EmotionTracker from "../components/EmotionTracker/EmotionTracker";
 import Header from "../components/UI/Header/Header";
@@ -15,6 +15,7 @@ import Footer from "../components/UI/Footer/Footer";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Explore from "../pages/Explore/Explore";
 import Chatpage from "../pages/ChatPage/ChatPage";
+// import re from "../"
 
 const Layout = () => {
   const location = useLocation();
