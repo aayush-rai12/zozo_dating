@@ -1,7 +1,9 @@
 import User from "../models/User.js";
+import UserDetails from "../models/UserDetails.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { uploadImage, deleteImage } from "../config/cloudinary.js";
 
 // User registration controller
 export const registerUser = async (req, res) => {
@@ -21,7 +23,12 @@ export const registerUser = async (req, res) => {
     // const hashedPassword = await bcrypt.hash(password, 10);
 
     //  Create new user with hashed password
-    const newUser = new User({ firstName, lastName, email, password: password });
+    const newUser = new User({
+      firstName,
+      lastName,
+      email,
+      password: password,
+    });
 
     //  Save the user to the database
     await newUser.save();
@@ -42,6 +49,7 @@ export const registerUser = async (req, res) => {
         email: newUser.email,
       },
       token,
+      expiresIn,
     });
   } catch (error) {
     console.error("Error saving user:", error);
@@ -56,7 +64,7 @@ export const loginUser = async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-    console.log(user || 'User not found');
+    console.log(user || "User not found");
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
@@ -89,25 +97,90 @@ export const loginUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Error during login:", error);
-    return res.status(500).json({ success:"error", message: "Internal server error" });
+    return res
+      .status(500)
+      .json({ success: "error", message: "Internal server error" });
   }
 };
 
 //userDetails
-export const userDetails = async(req, res) => {
+export const userDetails = async (req, res) => {
   try {
     // For multiple files, use req.files; for single file, use req.file
-    console.log("userDetails body:", req.body);
-    console.log("userDetails files:", req.files); // ✅ for multiple files
+    const {
+      user_Id,
+      phone,
+      birthday,
+      gender,
+      showGender,
+      interestedIn,
+      state,
+      city,
+      pinCode,
+    } = req.body;
+    // Check if file was uploaded
+    if (!req.files || req.files.length === 0) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Please upload an image" });
+    }
+    // Use correct property: file.path (not file.Path)
+    const filePaths = req.files.map((file) => file.path);
+    // Upload each file to Cloudinary
+    const uploadResults = await Promise.all(
+      filePaths.map((filePath) => uploadImage(filePath, "register_User_Images"))
+    );
+    
+    // Save both url and public_id for schema [{url, public_id}]
+    const images = uploadResults.map((result) => ({
+      url: result.secure_url,
+      public_id: result.public_id,
+    }));
 
-    // For debugging, return what you received
+    // Log the data to be saved for debugging
+    console.log("Saving userDetails with:", {
+      user_Id,
+      phoneNumber: phone,
+      birthday,
+      gender,
+      showGender,
+      InterestedIn: interestedIn,
+      address: {
+        city,
+        state,
+        pinCode,
+      },
+      images: images,
+    });
+
+    const userDetails = new UserDetails({
+      user_Id,
+      phoneNumber: phone,
+      address: {
+        state,
+        city,
+        pinCode,
+      },
+      birthday,
+      gender,
+      InterestedIn: interestedIn,
+      images: images,
+    });
+    // await userDetails.save();
+
     return res.status(200).json({
-      body: req.body,
-      files: req.files,
-      message: "Received user details"
+      success: true,
+      message: "User details saved with uploaded images",
+      userDetails: userDetails,
     });
   } catch (error) {
-    console.error("Error in userDetails:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    console.error("Failed to save userDetails data:", error); 
+    return res
+      .status(500)
+      .json({
+        success: false,
+        message: "Internal server error while userDetails",
+        error: error.message, // Add error message to response
+      });
   }
 };

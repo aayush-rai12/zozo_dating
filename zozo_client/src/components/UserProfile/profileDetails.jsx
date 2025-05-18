@@ -3,11 +3,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./profileDetails.css";
 import apiClient from "../../utils/apiClient";
+import { useNavigate } from "react-router-dom"; 
 
 const UserDetails = () => {
+  const navigate = useNavigate();
   const registeredUser = JSON.parse(localStorage.getItem("user"));
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmited, setIsSubmited] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+
   const [photos, setPhotos] = useState(Array(6).fill(null));
   const [formData, setFormData] = useState({
+    user_Id: registeredUser.user_Id,
     firstName: registeredUser
       ? `${registeredUser.firstName || ""} ${
           registeredUser.lastName || ""
@@ -165,12 +173,14 @@ const UserDetails = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const isValid = validateFormData();
     if (!isValid) return;
-
+    setIsLoading(true);
     const form = new FormData();
 
-    // Append form data
+    // Append basic form fields
+    form.append("user_Id", formData.user_Id);
     form.append("firstName", formData.firstName);
     form.append("email", formData.email);
     form.append("phone", formData.phone);
@@ -185,28 +195,50 @@ const UserDetails = () => {
     form.append("state", formData.state);
     form.append("pinCode", formData.zip);
 
-    // Append images
-    // A Blob (Binary Large Object) is a type of file-like object in JavaScript used to hold raw binary data, such as image or audio files.
+    // Append photos
     for (let i = 0; i < photos.length; i++) {
       const photo = photos[i];
       if (photo) {
         const blob = await fetch(photo).then((res) => res.blob());
-        form.append("photos", blob, `photo${i + 1}.jpg`);
+        form.append(
+          "photos",
+          blob,
+          `${registeredUser.firstName || "user"}_photo_${i + 1}.jpg`
+        );
       }
     }
 
     try {
-      console.log("Form Detais test", form);
+      console.log("Submitting form...");
       const response = await apiClient.post("/user/userDetails", form, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      alert("Profile created successfully!");
-      console.log(response.data);
+
+      //Adjust according to actual API structure
+      if (response.data?.success) {
+        setIsSubmited(true);
+        setMessageType("success");
+        setMessage(response.data.message || "User details saved with uploaded images");
+      } else {
+        setMessageType("error");
+        setMessage(response.data?.message || "Something went wrong while saving data.");
+      }
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+        navigate("/dashboard");
+      }, 2500);
     } catch (err) {
       console.error("Upload failed:", err);
+      setMessageType("error");
+      setMessage(
+        err?.response?.data?.message || "Failed to save user details."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -519,11 +551,27 @@ const UserDetails = () => {
               </div>
             </div>
           </div>
-
           <div className="text-center mt-3">
-            <button type="submit" className="btn submit_button">
-              Create Profile
-            </button>
+            {message && (
+              <div className={`userDetails-message ${messageType}`}>{message}</div>
+            )}
+
+            {messageType !== "success" && (
+              <button type="submit" className="btn submit_button">
+                {isLoading ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Please wait, saving...
+                  </>
+                ) : (
+                  "Create Profile"
+                )}
+              </button>
+            )}
           </div>
         </form>
       </div>

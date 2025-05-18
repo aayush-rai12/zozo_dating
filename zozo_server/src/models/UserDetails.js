@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 // Define the schema
 const userDetailsSchema = new mongoose.Schema({
-  userId: {
+  user_Id: {
     type: String,
     required: true,
   },
@@ -11,8 +11,9 @@ const userDetailsSchema = new mongoose.Schema({
     required: true,
   },
   address: {
-    type: String,
-    required: true,
+    state: { type: String, required: true },
+    city: { type: String, required: true },
+    pinCode: { type: String, required: true },
   },
   birthday: {
     type: String,
@@ -26,20 +27,14 @@ const userDetailsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  city: {
-    type: String,
-    required: true,
-  },
-  state: {
-    type: String,
-    required: true,
-  },
-  pinCode: {
-    type: String,
-    required: true,
-  },
   images: {
-    type: [String], // Array of image URLs
+    type: [
+      {
+        url: { type: String, required: true },
+        public_id: { type: String, required: true },
+        _id: false //in mongoss jb bhi new structure of array mai data stroe krta hai tb o by default unique id generate krta hai
+      }
+    ],
     validate: {
       validator: function (arr) {
         return arr.length <= 6;

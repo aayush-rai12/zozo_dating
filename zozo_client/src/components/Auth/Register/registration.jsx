@@ -95,14 +95,14 @@ const Register = () => {
       setMessage(response?.data?.message || "User registered successfully!");
       setMessageType("success");
 
-      // Optional: Clear form fields after success
+      //Clear form fields after success
       setFirstName("");
       setLastName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
 
-      // Optional: Hide message after 3 seconds AND  Redirect to login
+      // Hide message Redirect to login
       setTimeout(() => {
         setMessage("");
         setMessageType("");
