@@ -270,7 +270,7 @@ input[type="radio"] {
 }
 
 /* for success or error message  */
-.userDetailsg-message {
+.userDetails-message {
   margin: 10px 0;
   padding: 10px;
   border-radius: 4px;
@@ -278,12 +278,12 @@ input[type="radio"] {
   text-align: center;
 }
 
-.userDetailsg-message.success {
+.userDetails-message.success {
   color: green;
   background-color: #e6fbe6;
 }
 
-.userDetailsg-message.error {
+.userDetails-message.error {
   color: red;
   background-color: #fdeaea;
 }
