@@ -31,7 +31,8 @@ Zozo Dating is a modern dating platform designed to help users connect and form 
 ![image](https://github.com/user-attachments/assets/34a29c15-a4cf-44d3-8a62-49284d74ba86)
 
 **Create account with Full details section** - **I have completed the backend work**
-![image](https://github.com/user-attachments/assets/b320aae0-50f2-43fd-8751-4c093ec8c627)
+![image](https://github.com/user-attachments/assets/f220d879-f17a-4509-b0a5-94670b6e6b83)
+
 
 **Share anything with moood based card** - **I have completed the backend work**
 ![image](https://github.com/user-attachments/assets/4e27f9d3-50aa-407e-bb30-e02cbc4f805d)
