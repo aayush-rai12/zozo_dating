@@ -2,7 +2,6 @@ import React from "react";
 import "./Header.css";
 
 function Header(profile) {
-  console.log("Profiles picture", profile.Image);
   return (
     <header className="dashboard_header">
       <div className="dashboard_tabs">

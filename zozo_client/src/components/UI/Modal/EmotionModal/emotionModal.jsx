@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Modal, Button, Form, Row, Col, FloatingLabel } from "react-bootstrap";
 import { Clipboard } from "lucide-react";
 import "./emotionModal.css";
+import apiClient from "../../../../utils/apiClient";
 
 const moods = [
   { label: "Happy", emoji: "😊", color: "#FFD700" },
@@ -9,71 +10,108 @@ const moods = [
   { label: "Angry", emoji: "😡", color: "#FF6347" },
   { label: "Calm", emoji: "😌", color: "#90EE90" },
   { label: "Excited", emoji: "🤩", color: "#FF8C00" },
-  { label: "Loved", emoji: "❤️", color: "#FF1493" },
+  { label: "Loved", emoji: "❤️", color: "#c9184a" },
   { label: "Celebrating", emoji: "🥳", color: "#FF4500" },
-  // { label: "Confident", emoji: "😎", color: "#8B0000" },
-  // { label: "Tired", emoji: "🥱", color: "#D3D3D3" },
-  // { label: "Surprised", emoji: "😲", color: "#FF4500" },
-  // { label: "Nervous", emoji: "😬", color: "#A9A9A9" },
-  // { label: "Silly", emoji: "🤪", color: "#FF69B4" },
-  // { label: "Grateful", emoji: "🙏", color: "#4682B4" },
-  // { label: "Lonely", emoji: "🥺", color: "#483D8B" },
-  // { label: "Hopeful", emoji: "🌈", color: "#32CD32" },
-  // { label: "Frustrated", emoji: "😖", color: "#B22222" },
-  // { label: "Peaceful", emoji: "🕊️", color: "#00CED1" },
 ];
 
-const EmotionModal = ({ show, handleClose, handleSave }) => {
+const EmotionModal = ({ show, handleClose, fetchEmotionData, editItem }) => {
   const [feeling, setFeeling] = useState("");
   const [mood, setMood] = useState(null);
   const [intensity, setIntensity] = useState("");
-  const [trigger, setTrigger] = useState("");
+  const [triggerReason, setTrigger] = useState("");
   const [preferredActivity, setPreferredActivity] = useState("");
   const [partnerReaction, setPartnerReaction] = useState("");
-  const emojiContainerRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [customTrigger, setCustomTrigger] = useState("");
 
   const maxChars = 250;
-
-  const handleSubmit = () => {
-    const newEntry = {
-      id: Date.now(),
-      feelings: feeling,
-      mood: mood ? mood.label : "",
-      moodColor: mood?.color || "#fcb1b1", // Optional, if you want to keep colors
-      intensity,
-      trigger,
-      createdDate: new Date().toLocaleDateString(),
-      time: new Date().toLocaleTimeString(),
-      preferredActivity,
-      partnerImpact: partnerReaction,
-    };
-
-    const isSaved = handleSave(newEntry); // <-- This comes from props now
-
-    if (!isSaved) {
-      console.log("Save failed due to validation.");
-      return;
+  const emojiContainerRef = useRef(null);
+  useEffect(() => {
+    if (editItem) {
+      setFeeling(editItem.feelings || "");
+      setMood(moods.find((m) => m.label === editItem.mood));
+      setIntensity(editItem.intensity || "");
+      setTrigger(editItem.triggerReason || "");
+      setPreferredActivity(editItem.preferredActivity || "");
+      setPartnerReaction(editItem.partnerImpact || "");
+      setSelectedOption(editItem.triggerReason || "");
     }
-
-    // Reset form & close modal
-    setFeeling("");
-    setMood(null);
-    setIntensity("");
-    setTrigger("");
-    setPreferredActivity("");
-    setPartnerReaction("");
-    handleClose();
-    console.log("Save successful.");
-  };
+  }, [editItem]);
 
   const triggerOptions = [
     "They smiled at you",
     "Their voice",
     "The way they talk",
-    // "Custom",
   ];
-  const [selectedOption, setSelectedOption] = useState("");
-  const [customTrigger, setCustomTrigger] = useState("");
+
+  useEffect(() => {
+    if (!show) {
+      // Reset form on modal close
+      setFeeling("");
+      setMood(null);
+      setIntensity("");
+      setTrigger("");
+      setPreferredActivity("");
+      setPartnerReaction("");
+      setSelectedOption("");
+      setCustomTrigger("");
+    }
+  }, [show]);
+
+  const handleSubmit = async () => {
+    if (editItem) {
+      alert(
+        "Editing is not supported in this version. Please use the latest version of Zozo."
+      );
+    }
+    const newEntry = {
+      user_Id: JSON.parse(localStorage.getItem("user"))?.user_Id,
+      feelings: feeling.trim(),
+      mood: mood?.label || "",
+      moodColor: mood?.color || "#fcb1b1",
+      intensity,
+      triggerReason,
+      createdDate: new Date().toLocaleDateString(),
+      time: new Date().toLocaleTimeString(),
+      preferredActivity: preferredActivity.trim(),
+      partnerImpact: partnerReaction.trim(),
+    };
+
+    if (
+      !newEntry.user_Id ||
+      !newEntry.feelings ||
+      !newEntry.mood ||
+      !newEntry.intensity ||
+      !newEntry.triggerReason ||
+      !newEntry.preferredActivity ||
+      !newEntry.partnerImpact
+    ) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await apiClient.post("/user/saveEmotionData", newEntry);
+      if (response.status === 200) {
+        console.log(
+          "Emotion data saved successfully!",
+          response.data.emotionCardDetails
+        );
+        // Re-fetch updated emotion data
+        // await fetchEmotionData(newEntry.user_Id);
+        await fetchEmotionData();
+        // Call the parent handler to update state
+        handleClose(); // Close modal after success
+      }
+    } catch (error) {
+      console.error("Failed to save emotion data:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
@@ -104,33 +142,21 @@ const EmotionModal = ({ show, handleClose, handleSave }) => {
           <Modal.Title>Share Your Feeling</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body style={{ padding: "0" }}>
+        <Modal.Body style={{ padding: 0 }}>
           <div
-            className="emotionModal_container "
+            className="emotionModal_container"
             style={{
-              // backgroundColor: mood?.color || "#f0f0f0",
               boxShadow: mood
                 ? `0px 4px 20px ${mood.color}80`
                 : "0px 4px 10px rgba(0, 0, 0, 0.1)",
-              transition: "all 0.5s ease-in-out",
             }}
           >
-            <div
-              className="emotionModal_card"
-              style={{
-                // backgroundColor: mood?.color || "#f0f0f0",
-                boxShadow: mood
-                  ? `0px 4px 20px ${mood.color}80`
-                  : "0px 4px 10px rgba(0, 0, 0, 0.1)",
-                transition: "all 0.5s ease-in-out",
-              }}
-            >
+            <div className="emotionModal_card">
               <Form>
                 <Form.Group>
                   <div className="emotionModal_input_container">
                     <textarea
                       className="emotionModal_textarea"
-                      // rows="1"
                       placeholder="Share your feeling..."
                       value={feeling}
                       onChange={(e) => setFeeling(e.target.value)}
@@ -151,6 +177,7 @@ const EmotionModal = ({ show, handleClose, handleSave }) => {
                         <button
                           type="button"
                           key={item.label}
+                          title={item.label}
                           className={`mood_btn ${
                             mood?.label === item.label ? "selected" : ""
                           }`}
@@ -170,7 +197,7 @@ const EmotionModal = ({ show, handleClose, handleSave }) => {
                   </div>
                 </Form.Group>
 
-                {/* Intensity & Trigger Reason in One Row */}
+                {/* Intensity & Trigger */}
                 <Row>
                   <Col md={6}>
                     <Form.Group>
@@ -194,8 +221,7 @@ const EmotionModal = ({ show, handleClose, handleSave }) => {
                   </Col>
 
                   <Col md={6}>
-                    {/* Show dropdown only if not "Custom" */}
-                    {selectedOption !== "Custom" && (
+                    {selectedOption !== "Custom" ? (
                       <Form.Group>
                         <FloatingLabel
                           controlId="floatingTriggerSelect"
@@ -208,7 +234,6 @@ const EmotionModal = ({ show, handleClose, handleSave }) => {
                               setSelectedOption(value);
                               if (value !== "Custom") {
                                 setTrigger(value);
-                                setCustomTrigger("");
                               } else {
                                 setTrigger("");
                               }
@@ -224,10 +249,7 @@ const EmotionModal = ({ show, handleClose, handleSave }) => {
                           </Form.Select>
                         </FloatingLabel>
                       </Form.Group>
-                    )}
-
-                    {/* Show custom input with icon inside */}
-                    {selectedOption === "Custom" && (
+                    ) : (
                       <Form.Group className="position-relative">
                         <FloatingLabel
                           controlId="floatingTrigger"
@@ -236,43 +258,27 @@ const EmotionModal = ({ show, handleClose, handleSave }) => {
                           <Form.Control
                             type="text"
                             placeholder="What triggered this feeling?"
-                            value={trigger}
+                            value={triggerReason}
                             onChange={(e) => setTrigger(e.target.value)}
-                            style={{ paddingRight: "2.5rem" }} // make room for icon
                           />
                         </FloatingLabel>
-
-                        {/* Icon inside input */}
                         <span
                           className="position-absolute top-50 translate-middle-y"
-                          style={{
-                            right: "10px",
-                            cursor: "pointer",
-                            color: "#6c757d",
-                          }}
+                          style={{ right: "10px", cursor: "pointer" }}
                           onClick={() => {
                             setSelectedOption("");
                             setTrigger("");
                           }}
                           title="Back to list"
                         >
-                          <i
-                            className="fas fa-arrow-left position-absolute"
-                            style={{
-                              top: "50%",
-                              right: "10px",
-                              transform: "translateY(-50%)",
-                              cursor: "pointer",
-                              color: "#6c757d",
-                            }}
-                          ></i>
+                          <i className="fas fa-arrow-left" />
                         </span>
                       </Form.Group>
                     )}
                   </Col>
                 </Row>
 
-                {/* Preferred Activity & Partner Reacted in Second Row */}
+                {/* Preferred Activity & Partner Reaction */}
                 <Row className="mt-3">
                   <Col md={6}>
                     <Form.Group>
@@ -315,8 +321,8 @@ const EmotionModal = ({ show, handleClose, handleSave }) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSubmit}>
-            Save
+          <Button variant="primary" onClick={handleSubmit} disabled={loading}>
+            {loading ? "Saving..." : "Save"}
           </Button>
         </Modal.Footer>
       </Modal>

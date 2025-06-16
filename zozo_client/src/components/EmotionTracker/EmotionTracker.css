@@ -31,7 +31,7 @@
 
 .emotion_subtitle {
   font-size: 14px;
-  color: #7a7a7a;
+  color: #404040!important;
 }
 
 .add_emotion_btn {
@@ -138,6 +138,9 @@
   gap: 10px;
   justify-content: center;
   align-items: center;
+  background-color: #5c3317;
+  border-radius: 17px;
+  padding: 1px;
 }
 
 .emotion_edit_btn,
@@ -177,6 +180,7 @@
   display: inline-block;
   width: 40px;
   height: 24px;
+  top: 4px!important;
 }
 
 .emotion_toggle_switch input {
@@ -215,6 +219,19 @@ input:checked + .switch {
 
 input:checked + .switch:before {
   transform: translateX(16px);
+}
+
+.emotion_toggle_switch .switch {
+  transition: all 0.3s ease-in-out;
+}
+
+.emotion_toggle_switch input:checked + .switch {
+  transition: all 0.3s ease-in-out;
+}
+
+.emotion_toggle_switch .switch.loading {
+  opacity: 0.7;
+  cursor: wait;
 }
 
 .table-responsive {
@@ -257,86 +274,26 @@ input:checked + .switch:before {
   }
 }
 
-/*
-
-.share_feeling_card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 350px;
-  padding: 20px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s ease-in-out;
-}
-
-.share_feeling_card:hover {
-  transform: scale(1.05);
-}
-
-.like-button {
-  padding: 12px 20px;
-  background: linear-gradient(45deg, #5c6bc0, #3f4b8e);
-  color: white;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  transition: transform 0.2s ease, background-color 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.like-button:hover {
-  transform: scale(1.1);
-  background: linear-gradient(45deg, #3f4b8e, #5c6bc0);
-}
-
-.like-button:active {
-  transform: scale(0.95);
-}
-
-.heart {
-  position: absolute;
-  bottom: 0;
-  font-size: 1.5rem;
-  opacity: 0;
-  user-select: none;
-  animation: floatHeart 5s linear forwards;
-}
-
-@keyframes floatHeart {
-  0% {
-    transform: translateY(0) translateX(0) scale(0.6);
-    opacity: 0.5;
-  }
-  100% {
-    transform: translateY(-100vh) translateX(15px) scale(0.9);
-    opacity: 0;
-  }
-} */
-
 /* new card layout */
+
 .cards-container {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
-  padding: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(354px, 1fr));
-  justify-items: center;
+  padding: 1.5%;
+  border-radius: 16px;
 }
 .emotion-card {
-  position: relative; /* Added this */
-  overflow: hidden; /* Added this */
+  position: relative;
+  overflow: hidden;
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.9);
   padding: 20px 24px;
-  /* max-width: 400px; */
-  width: 100%;
   margin: 0 auto;
   transition: transform 0.3s ease;
+  flex: 1 1 354px;
 }
 
 .emotion-card:hover {
@@ -487,4 +444,18 @@ input:checked + .switch:before {
     transform: translateY(-100vh) translateX(15px) scale(0.9);
     opacity: 0;
   }
+}
+/* if no data availbale in the data then that time show message this css for that */
+.no-data-message {
+  text-align: center;
+  padding: 40px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.no-data-message p {
+  font-size: 18px;
+  color: #6c757d;
+  margin-bottom: 20px;
 }
