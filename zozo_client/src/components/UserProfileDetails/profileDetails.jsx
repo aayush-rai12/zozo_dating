@@ -3,11 +3,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./profileDetails.css";
 import apiClient from "../../utils/apiClient";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 const UserDetails = () => {
   const navigate = useNavigate();
-  const registeredUser = JSON.parse(localStorage.getItem("user"));
+  const registeredUser = JSON.parse(localStorage.getItem("user")) || "";
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmited, setIsSubmited] = useState(false);
   const [message, setMessage] = useState("");
@@ -15,12 +15,8 @@ const UserDetails = () => {
 
   const [photos, setPhotos] = useState(Array(6).fill(null));
   const [formData, setFormData] = useState({
-    user_Id: registeredUser.user_Id,
-    firstName: registeredUser
-      ? `${registeredUser.firstName || ""} ${
-          registeredUser.lastName || ""
-        }`.trim()
-      : "",
+    user_Id: registeredUser.user_Id || "",
+    fullName: registeredUser? `${registeredUser.firstName || ""} ${registeredUser.lastName || ""}`.trim( ): "",
     email: registeredUser ? `${registeredUser.email || ""}` : "",
     phone: "",
     birthday: "",
@@ -35,7 +31,7 @@ const UserDetails = () => {
     zip: "",
   });
   const [errors, setErrors] = useState({});
-  const genders = ["man", "woman", "other"];
+  const genders = ["Male", "Female", "other"];
   const handleFileChange = (index, e) => {
     const file = e.target.files[0];
     console.log(file);
@@ -77,10 +73,10 @@ const UserDetails = () => {
     // eighteenYearsAgo.setFullYear(currentDate.getFullYear() - 18);
 
     // Name validation
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = "Full name is required";
-    } else if (!matchName.test(formData.firstName)) {
-      newErrors.firstName = "Please enter a valid name";
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = "Full name is required";
+    } else if (!matchName.test(formData.fullName)) {
+      newErrors.fullName = "Please enter a valid name";
     }
 
     // Email validation
@@ -181,7 +177,7 @@ const UserDetails = () => {
 
     // Append basic form fields
     form.append("user_Id", formData.user_Id);
-    form.append("firstName", formData.firstName);
+    form.append("fullName", formData.fullName);
     form.append("email", formData.email);
     form.append("phone", formData.phone);
     form.append(
@@ -200,31 +196,55 @@ const UserDetails = () => {
       const photo = photos[i];
       if (photo) {
         const blob = await fetch(photo).then((res) => res.blob());
+        console.log("blob", blob);
         form.append(
           "photos",
           blob,
-          `${registeredUser.firstName || "user"}_photo_${i + 1}.jpg`
+          `${registeredUser.fullName || "user"}_photo_${i + 1}.jpg`
         );
       }
     }
-
+    const token = registeredUser.token;
+    
     try {
       console.log("Submitting form...");
       const response = await apiClient.post("/user/userDetails", form, {
         headers: {
           "Content-Type": "multipart/form-data",
+          authorization : `Bearer ${token}`
         },
       });
-
-
+      console.log(formData);
       //Adjust according to actual API structure
       if (response.data?.success) {
         setIsSubmited(true);
         setMessageType("success");
-        setMessage(response.data.message || "User details saved with uploaded images");
+        setMessage(
+          response.data.message || "User details saved with uploaded images"
+        );
+        //Reset form fields
+      setFormData({
+        user_Id: "",
+        fullName: "",
+        email: "",
+        phone: "",
+        birthdayYear: "",
+        birthdayMonth: "",
+        birthdayDay: "",
+        gender: "",
+        showGender: "",
+        interestedIn: "",
+        city: "",
+        state: "",
+        zip: "",
+      });
+
+      setPhotos([]); //Reset uploaded photo previews or data
       } else {
         setMessageType("error");
-        setMessage(response.data?.message || "Something went wrong while saving data.");
+        setMessage(
+          response.data?.message || "Something went wrong while saving data."
+        );
       }
       setTimeout(() => {
         setMessage("");
@@ -257,19 +277,19 @@ const UserDetails = () => {
             <div className="">
               {/* Full Name */}
               <div className="form-group">
-                <label htmlFor="firstName">Full Name</label>
+                <label htmlFor="fullName">Full Name</label>
                 <input
-                  id="firstName"
-                  name="firstName"
+                  id="fullName"
+                  name="fullName"
                   type="text"
                   className="form-control"
                   placeholder="Full Name"
-                  value={formData.firstName}
+                  value={formData.fullName}
                   onChange={handleInputChange}
                   disabled
                 />
-                {errors.firstName && (
-                  <span className="errors_label">{errors.firstName}</span>
+                {errors.fullName && (
+                  <span className="errors_label">{errors.fullName}</span>
                 )}
               </div>
 
@@ -553,7 +573,9 @@ const UserDetails = () => {
           </div>
           <div className="text-center mt-3">
             {message && (
-              <div className={`userDetails-message ${messageType}`}>{message}</div>
+              <div className={`userDetails-message ${messageType}`}>
+                {message}
+              </div>
             )}
 
             {messageType !== "success" && (

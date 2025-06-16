@@ -10,13 +10,14 @@ const isEmailValid = (email) => EMAIL_REGEX.test(email);
 
 const isPasswordValid = (password) => password.length >= PASSWORD_MIN_LENGTH;
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -44,6 +45,7 @@ const Login = () => {
       };
       try {
         const response = await apiClient.post("/user/login", user);
+        console.log("after login ", response.data);
         if (response?.data?.message) {
           setMessage(response?.data?.message);
           setMessageType("success");
@@ -51,13 +53,14 @@ const Login = () => {
           localStorage.setItem("user", JSON.stringify(response?.data?.user));
         }
         setTimeout(() => {
-         
           setMessage("");
           setMessageType("");
           navigate("/userProfile");
         }, 1500);
       } catch (error) {
-        setMessage(error?.response?.data?.message || "Login failed please try again");
+        setMessage(
+          error?.response?.data?.message || "Login failed please try again"
+        );
         setMessageType("error");
       }
     }

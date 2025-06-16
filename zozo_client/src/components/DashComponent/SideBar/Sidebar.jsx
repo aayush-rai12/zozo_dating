@@ -22,7 +22,9 @@ function Sidebar() {
               <FaHome className="nav_icon" /> Home
             </li>
             <li className="dashboard_nav_item">
-              <FaUsers className="nav_icon" /> Explore Users
+              <FaUsers className="nav_icon" /><Link to="/explore" rel="stylesheet" href="">
+                 Explore Users
+              </Link>
             </li>
             <li className="dashboard_nav_item">
               <IoPeople className="nav_icon" /> My Matches
@@ -32,7 +34,7 @@ function Sidebar() {
             </li>
             <li className="dashboard_nav_item">
             <FaPhotoVideo className="nav_icon" />
-              <Link to="/userprofile" rel="stylesheet" href="">
+              <Link to="/userProfile" rel="stylesheet" href="">
                 Uploaded Images
               </Link>
             </li>

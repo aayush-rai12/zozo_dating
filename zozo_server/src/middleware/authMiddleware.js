@@ -1,21 +1,25 @@
 import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
-export const protect = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+export const protect = async (req, res, next) => {
+  let token;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ success: false, message: "No token provided" });
-  }
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
 
-  const token = authHeader.split(" ")[1]; // Bearer <token>
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Now you have access to user ID in req.user
-    next();
-  } catch (error) {
-    return res.status(403).json({ success: false, message: "Invalid or expired token" });
+      console.log(token)
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded.id).select("-password");
+      next();
+    } catch (error) {
+      console.error("Token verification failed", error);
+      res.status(401).json({ message: "Not authorized, token failed" });
+    }
+  } else {
+    res.status(401).json({ message: "Not authorized, no token" });
   }
 };
-// This middleware checks if the user is authenticated by verifying the JWT token.
-// If the token is valid, it adds the user information to the request object and calls next() to proceed to the next middleware or route handler.
