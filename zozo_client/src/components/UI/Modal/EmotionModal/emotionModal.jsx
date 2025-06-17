@@ -61,9 +61,8 @@ const EmotionModal = ({ show, handleClose, fetchEmotionData, editItem }) => {
 
   const handleSubmit = async () => {
     if (editItem) {
-      alert(
-        "Editing is not supported in this version. Please use the latest version of Zozo."
-      );
+      alert("thode din ruko, edit item ka code likhna baaki hai");
+      return;
     }
     const newEntry = {
       user_Id: JSON.parse(localStorage.getItem("user"))?.user_Id,
