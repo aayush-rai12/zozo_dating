@@ -33,28 +33,6 @@ const ToggleSwitch = ({ isPublic, onToggle }) => {
 
 const EmotionTable = ({ data, setData, setShowModal, setEditItem }) => {
   const [selectedItems, setSelectedItems] = useState([]);
-  //  Delete function
-  const handleDelete = async (id) => {
-    try {
-      const userConfirmation = window.confirm(
-        "Are you sure you want to delete this emotion entry? This action cannot be undone."
-      );
-      
-      if (userConfirmation) {
-        const response = await apiClient.delete(`/user/deleteEmotionCard/${id}`);
-        
-        if (response.status === 200) {
-          const updatedData = data.filter((item) => item._id !== id);
-          setData(updatedData);
-        } else {
-          alert("Failed to delete the emotion entry. Please try again.");
-        }
-      }
-    } catch (error) {
-      console.error("Delete failed:", error);
-      alert("Failed to delete the emotion entry. Please try again.");
-    }
-  };
 
   // Edit function (will be implemented later)
   const handleEdit = (id) => {
@@ -64,6 +42,59 @@ const EmotionTable = ({ data, setData, setShowModal, setEditItem }) => {
       console.log("Editing entry:", entry);
       setEditItem(entry);
       setShowModal(true);
+    }
+  };
+
+  // Delete function
+  const handleDelete = async (ids) => {
+    const confirmMessage = Array.isArray(ids)
+      ? `Are you sure you want to delete ${ids.length} entries? This action cannot be undone.`
+      : "Are you sure you want to delete this emotion entry? This action cannot be undone.";
+
+    const userConfirmation = window.confirm(confirmMessage);
+
+    if (!userConfirmation) return;
+
+    const idArray = Array.isArray(ids) ? ids : [ids];
+
+    try {
+      const deletionResults = await Promise.all(
+        idArray.map(async (id) => {
+          try {
+            const response = await apiClient.delete(
+              `/user/deleteEmotionCard/${id}`
+            );
+            return { id, success: response.status === 200 };
+          } catch (error) {
+            console.error(`Failed to delete item ${id}:`, error);
+            return { id, success: false };
+          }
+        })
+      );
+
+      const successfulDeletes = deletionResults
+        .filter((result) => result.success)
+        .map((result) => result.id);
+
+      if (successfulDeletes.length > 0) {
+        setData((prevData) =>
+          prevData.filter((item) => !successfulDeletes.includes(item._id))
+        );
+        setSelectedItems((prevSelected) =>
+          prevSelected.filter((id) => !successfulDeletes.includes(id))
+        );
+        console.log(
+          `Successfully deleted ${successfulDeletes.length} item(s).`
+        );
+      }
+
+      const failedCount = idArray.length - successfulDeletes.length;
+      if (failedCount > 0) {
+        alert(`Failed to delete ${failedCount} item(s). Please try again.`);
+      }
+    } catch (error) {
+      console.error("Delete failed:", error);
+      alert("Failed to process delete request. Please try again.");
     }
   };
 
@@ -139,52 +170,6 @@ const EmotionTable = ({ data, setData, setShowModal, setEditItem }) => {
   }
 
   // Update the bulk delete handler
-  const handleBulkDelete = async () => {
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete ${selectedItems.length} entries? This action cannot be undone.`
-    );
-
-    if (confirmDelete) {
-      try {
-        // Track successful deletions
-        const deletionResults = await Promise.all(
-          selectedItems.map(async (id) => {
-            try {
-              const response = await apiClient.delete(`/user/deleteEmotionCard/${id}`);
-              return { id, success: response.status === 200 };
-            } catch (error) {
-              console.error(`Failed to delete item ${id}:`, error);
-              return { id, success: false };
-            }
-          })
-        );
-
-        // Filter out successfully deleted items
-        const successfulDeletes = deletionResults
-          .filter(result => result.success)
-          .map(result => result.id);
-
-        if (successfulDeletes.length > 0) {
-          // Update local state to remove successfully deleted items
-          setData(prevData => prevData.filter(item => !successfulDeletes.includes(item._id)));
-          setSelectedItems(prevSelected => prevSelected.filter(id => !successfulDeletes.includes(id)));
-
-          // Show success message
-          console.log(`Successfully deleted ${successfulDeletes.length} items.`);
-        }
-
-        // Show warning if some deletions failed
-        const failedCount = selectedItems.length - successfulDeletes.length;
-        if (failedCount > 0) {
-          alert(`Failed to delete ${failedCount} items. Please try again.`);
-        }
-
-      } catch (error) {
-        console.error("Bulk delete failed:", error);
-        alert("Failed to process delete request. Please try again.");
-      }
-    }
-  };
 
   return (
     <div className="table-responsive">
@@ -194,7 +179,7 @@ const EmotionTable = ({ data, setData, setShowModal, setEditItem }) => {
             <span>{selectedItems.length} items selected</span>
             <button
               className="delete-selected-btn"
-              onClick={handleBulkDelete}
+              onClick={() => handleDelete(selectedItems)}
             >
               Delete Selected <i className="fa-solid fa-trash"></i>
             </button>
