@@ -49,6 +49,21 @@ Zozo Dating is a modern dating platform designed to help users connect and form 
 ![image](https://github.com/user-attachments/assets/c68f4a4a-0f6b-4456-8538-79abd21768c7)
 ![image](https://github.com/user-attachments/assets/a69d550b-cd41-4dab-a683-a89b56152d71)
 
+**dashboard**
+**User greeting, new matches, profile completion tips, and daily login streak.**
+![image](https://github.com/user-attachments/assets/b477a4b9-f241-4469-86a3-4938a31ae3ee)
+![image](https://github.com/user-attachments/assets/457fcd8c-5e8b-4262-a655-15feea68d64d)
+![image](https://github.com/user-attachments/assets/69bbbbe5-4bcf-40dc-b27e-2a8594777d2a)
+![image](https://github.com/user-attachments/assets/5e5c7b90-ae42-444e-a72c-b6ebd4cbabcc)
+![image](https://github.com/user-attachments/assets/7059718d-b346-42f5-b605-3c6a4baf2cea)
+![image](https://github.com/user-attachments/assets/42a8caea-54c7-4ae8-851e-a9a8a2e4498e)
+
+
+
+
+
+
+
 **The Explore section is in progress; a few tasks are remaining. I'll work on it**
 ![image](https://github.com/user-attachments/assets/fc9bc8cf-78fe-4034-a67c-ff874beed76c) ![image](https://github.com/user-attachments/assets/6f1b5cc7-4a22-4334-95f8-acee890d38e1)
 
