@@ -38,12 +38,11 @@ Zozo Dating is a modern dating platform designed to help users connect and form 
 
 
 **Share anything with moood based card** - **I have completed the backend work**
-![image](https://github.com/user-attachments/assets/4e27f9d3-50aa-407e-bb30-e02cbc4f805d)
+![image](https://github.com/user-attachments/assets/8a985d9e-acf7-422e-b658-f13bb0e6100c)
+
 
 **Emotion Tracker Table**
-![image](https://github.com/user-attachments/assets/315872f3-279b-4039-a740-78f9f81731a9)
-
-
+![image](https://github.com/user-attachments/assets/64f19fa8-edd7-4a1d-aed9-10e49a833e7b)
 
 **Generated the card with like feature with details** - **I have completed the backend work**
 ![image](https://github.com/user-attachments/assets/b18b293f-13cd-4ec6-88e9-112a21a7feb0)
