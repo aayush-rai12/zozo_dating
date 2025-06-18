@@ -53,15 +53,16 @@ Zozo Dating is a modern dating platform designed to help users connect and form 
 **User greeting, new matches, profile completion tips, and daily login streak.**
 ![image](https://github.com/user-attachments/assets/b477a4b9-f241-4469-86a3-4938a31ae3ee)
 **Shows total matches, likes received, and messages sent.**
-![image](https://github.com/user-attachments/assets/457fcd8c-5e8b-4262-a655-15feea68d64d)
 **My Matches – List of potential matches with compatibility scores.**
-![image](https://github.com/user-attachments/assets/69bbbbe5-4bcf-40dc-b27e-2a8594777d2a)
+![image](https://github.com/user-attachments/assets/457fcd8c-5e8b-4262-a655-15feea68d64d)
 **AI Date Planner – AI-suggested date ideas based on user data.**
-![image](https://github.com/user-attachments/assets/5e5c7b90-ae42-444e-a72c-b6ebd4cbabcc)
+![image](https://github.com/user-attachments/assets/69bbbbe5-4bcf-40dc-b27e-2a8594777d2a)
 **Events & Date Ideas – Nearby events to plan real-life meetups.**
 **Mood-Based Suggestions – Match recommendations based on mood/interests.**
-![image](https://github.com/user-attachments/assets/7059718d-b346-42f5-b605-3c6a4baf2cea)
+![image](https://github.com/user-attachments/assets/5e5c7b90-ae42-444e-a72c-b6ebd4cbabcc)
 **Zozo Success Stories – Real user stories of successful matches.**
+![image](https://github.com/user-attachments/assets/7059718d-b346-42f5-b605-3c6a4baf2cea)
+**Zozo Success Stories – With Modal feature**
 ![image](https://github.com/user-attachments/assets/42a8caea-54c7-4ae8-851e-a9a8a2e4498e)
 
 **The Explore section is in progress; a few tasks are remaining. I'll work on it**
