@@ -345,4 +345,67 @@ export const deleteEmotionCard = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-  
+
+// Update emotion card
+export const updateEmotionCard = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { user_Id, ...updateFields } = req.body;
+    console.log("Update card ID:", id, user_Id);
+    console.log("Update fields:", updateFields);
+    // Validate if ID exists
+    if (!id || !user_Id) {
+      return res.status(400).json({
+        success: false,
+        message: "Emotion card ID and user ID are required"
+      });
+    }
+
+    // Find the existing emotion card
+    const existingCard = await EmotionCardEntry.findById(id);
+    
+    if (!existingCard) {
+      return res.status(404).json({
+        success: false,
+        message: "Emotion card not found"
+      });
+    }
+
+    // Check if the user owns this card
+    if (existingCard.user_Id.toString() !== user_Id) {
+      return res.status(403).json({
+        success: false,
+        message: "You don't have permission to update this emotion card"
+      });
+    }
+
+    // Proceed with update if authorized
+    const updatedCard = await EmotionCardEntry.findByIdAndUpdate(
+      id,
+      { 
+        $set: {
+          ...updateFields,
+          updatedAt: new Date()
+        }
+      },
+      { 
+        new: true,
+        runValidators: true
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Emotion card updated successfully",
+      emotionCardDetails: updatedCard
+    });
+
+  } catch (error) {
+    console.error("Update emotion card error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update emotion card",
+      error: error.message
+    });
+  }
+};

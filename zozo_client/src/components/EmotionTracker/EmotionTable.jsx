@@ -208,6 +208,7 @@ const EmotionTable = ({ data, setData, setShowModal, setEditItem }) => {
         </thead>
         <tbody>
           {dataArray.map((item) => (
+            console.log("Rendering item:", item),
             <tr key={item._id}>
               <td>
                 <input
@@ -219,7 +220,7 @@ const EmotionTable = ({ data, setData, setShowModal, setEditItem }) => {
               <td>{item.feelings}</td>
 
               <td>
-                <span
+                <span style={{ backgroundColor: `${item?.moodColor}50` }}
                   className={`mood-tag ${
                     item.mood ? item.mood.toLowerCase() : ""
                   }`}
