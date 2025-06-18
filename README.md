@@ -16,19 +16,22 @@ Zozo Dating is a modern dating platform designed to help users connect and form 
   -Backend (Planned): Node.js, Express, MongoDB
   
 **Home Page**
-![image](https://github.com/user-attachments/assets/1243e14f-0063-477d-a0b4-13898b465e00)
+![image](https://github.com/user-attachments/assets/9eaef893-b418-41ce-abd2-080d1d7ebe93)
 
 **Create Account Modal popup**
-![image](https://github.com/user-attachments/assets/187c49aa-28e8-4b5a-baf6-90603582699a)
+![image](https://github.com/user-attachments/assets/68d821ef-e594-45db-8fde-d4377466ae8b)
 
 **User Register Page** - **I have completed the backend work**
-![image](https://github.com/user-attachments/assets/cde4d702-9246-4c27-a596-daca811dd7f8)
+![image](https://github.com/user-attachments/assets/fcb73703-c8c9-490c-9878-31afb76bec47)
+
 
 **Login Page**
-![image](https://github.com/user-attachments/assets/19b9cf48-8d21-484f-bcc4-0e5da9a2b69e)
+![image](https://github.com/user-attachments/assets/e9a02ebd-f06e-4ad2-bee6-01cebdfc2f1b)
+
 
 **Reset password Page**
-![image](https://github.com/user-attachments/assets/34a29c15-a4cf-44d3-8a62-49284d74ba86)
+![image](https://github.com/user-attachments/assets/85976948-1820-4749-b3ab-b7eb8a103df1)
+
 
 **Create account with Full details section** - **I have completed the backend work**
 ![image](https://github.com/user-attachments/assets/f220d879-f17a-4509-b0a5-94670b6e6b83)
