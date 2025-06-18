@@ -46,8 +46,8 @@ Zozo Dating is a modern dating platform designed to help users connect and form 
 
 
 **Generated the card with like feature with details** - **I have completed the backend work**
-![image](https://github.com/user-attachments/assets/c68f4a4a-0f6b-4456-8538-79abd21768c7)
-![image](https://github.com/user-attachments/assets/a69d550b-cd41-4dab-a683-a89b56152d71)
+![image](https://github.com/user-attachments/assets/b18b293f-13cd-4ec6-88e9-112a21a7feb0)
+
 
 **User Dashboard– For now, I have used the Random User API to display details and images on the dashboard**
 
