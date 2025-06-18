@@ -27,11 +27,64 @@ const EmotionModal = ({ show, handleClose, fetchEmotionData, editItem }) => {
 
   const maxChars = 250;
   const emojiContainerRef = useRef(null);
-   let triggerOptions = [
+  const triggerOptions = [
+    {
+      category: "🧡 Romantic / Partner Specific",
+      triggers: [
         "They smiled at you",
         "Their voice",
+        "The way they looked at you",
         "The way they talk",
-      ];
+        "Their laugh",
+        "Their hugs",
+        "Their kisses",
+        "Their scent",
+        "Their touch",
+        "When they held your hand",
+        "When they surprised you",
+        "They noticed the small things",
+        "When they stood up for you",
+        "When they said something deep",
+        "When they opened up emotionally",
+        "When they cooked or made something for you",
+      ],
+    },
+    {
+      category: "👪 Family / Social",
+      triggers: [
+        "Papa ki daant",
+        "Maa ka pyar",
+        "Friend’s unexpected support",
+        "Sibling teasing you playfully",
+        "When a friend shared your happiness",
+      ],
+    },
+    {
+      category: "🌧️ Situational / Reflective",
+      triggers: [
+        "Woke up to peaceful weather",
+        "Felt alone in a crowd",
+        "Old memory triggered by a song",
+        "Saw a couple in love",
+        "Random act of kindness",
+        "Got emotional after watching a movie",
+        "Read a message that hit you deeply",
+        "Felt lost in thoughts",
+        "Someone genuinely listened to you",
+      ],
+    },
+    {
+      category: "🚀 Growth / Self-love",
+      triggers: [
+        "Completed a long-pending task",
+        "Received unexpected praise",
+        "You spoke your heart out",
+        "Took a break for yourself",
+        "Looked in the mirror and smiled",
+      ],
+    },
+  ];
+
   useEffect(() => {
     if (editItem) {
       setFeeling(editItem.feelings || "");
@@ -41,21 +94,19 @@ const EmotionModal = ({ show, handleClose, fetchEmotionData, editItem }) => {
       setPartnerReaction(editItem.partnerImpact || "");
 
       // Trigger reason logic
-     
+
       if (triggerOptions.includes(editItem.triggerReason)) {
         setSelectedOption(editItem.triggerReason);
         setTrigger(editItem.triggerReason);
       } else if (editItem.triggerReason) {
-        setSelectedOption("Custom"); 
-        setTrigger(editItem.triggerReason); 
+        setSelectedOption("Custom");
+        setTrigger(editItem.triggerReason);
       } else {
         setSelectedOption("");
         setTrigger("");
       }
     }
   }, [editItem]);
-
-  
 
   useEffect(() => {
     if (!show) {
@@ -75,7 +126,7 @@ const EmotionModal = ({ show, handleClose, fetchEmotionData, editItem }) => {
     try {
       setLoading(true);
       const userId = JSON.parse(localStorage.getItem("user"))?.user_Id;
-      
+
       if (!userId) {
         throw new Error("User not authenticated");
       }
@@ -97,7 +148,7 @@ const EmotionModal = ({ show, handleClose, fetchEmotionData, editItem }) => {
           `/user/updateEmotionCard/${editItem._id}`,
           {
             ...emotionData,
-            _id: editItem._id
+            _id: editItem._id,
           }
         );
       } else {
@@ -117,6 +168,16 @@ const EmotionModal = ({ show, handleClose, fetchEmotionData, editItem }) => {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleTriggerChange = (e) => {
+    const value = e.target.value;
+    setSelectedOption(value);
+    if (value !== "Custom") {
+      setTrigger(value);
+    } else {
+      setTrigger("");
     }
   };
 
@@ -236,21 +297,17 @@ const EmotionModal = ({ show, handleClose, fetchEmotionData, editItem }) => {
                         >
                           <Form.Select
                             value={selectedOption}
-                            onChange={(e) => {
-                              const value = e.target.value;
-                              setSelectedOption(value);
-                              if (value !== "Custom") {
-                                setTrigger(value);
-                              } else {
-                                setTrigger("");
-                              }
-                            }}
+                            onChange={handleTriggerChange}
+                            className="form-select"
                           >
-                            <option value="">Select a reason</option>
-                            {triggerOptions.map((reason, index) => (
-                              <option key={index} value={reason}>
-                                {reason}
-                              </option>
+                            {triggerOptions.map((group) => (
+                              <optgroup key={group.category} label={group.category}>
+                                {group.triggers.map((trigger) => (
+                                  <option key={trigger} value={trigger}>
+                                    {trigger}
+                                  </option>
+                                ))}
+                              </optgroup>
                             ))}
                             <option value="Custom">Custom</option>
                           </Form.Select>
@@ -264,7 +321,7 @@ const EmotionModal = ({ show, handleClose, fetchEmotionData, editItem }) => {
                         >
                           <Form.Control
                             type="text"
-                            placeholder="What triggered this feeling?"
+                            placeholder="Enter your custom reason?"
                             value={triggerReason}
                             onChange={(e) => setTrigger(e.target.value)}
                           />
