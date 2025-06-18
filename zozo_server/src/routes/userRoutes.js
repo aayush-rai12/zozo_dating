@@ -1,5 +1,5 @@
 import express from 'express';
-import {registerUser, loginUser, userDetails, getUserDetails, saveEotionCardData, getEmotionData, toggleEmotionStatus, deleteEmotionCard} from '../controllers/userController.js';
+import {registerUser, loginUser, userDetails, getUserDetails, saveEotionCardData, getEmotionData, toggleEmotionStatus, deleteEmotionCard, updateEmotionCard} from '../controllers/userController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import multer from 'multer';
 import upload from "../config/multer.js";
@@ -20,6 +20,7 @@ router.post('/saveEmotionData', saveEotionCardData);
 router.get('/getEmotionData/:userId', getEmotionData);
 // update the emotion card isPublic or not
 router.patch('/toggleEmotionStatus/:id',toggleEmotionStatus);
+router.patch('/updateEmotionCard/:id', updateEmotionCard);
 router.delete('/deleteEmotionCard/:id', deleteEmotionCard);
 
 

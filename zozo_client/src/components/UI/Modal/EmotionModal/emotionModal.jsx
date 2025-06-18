@@ -27,23 +27,35 @@ const EmotionModal = ({ show, handleClose, fetchEmotionData, editItem }) => {
 
   const maxChars = 250;
   const emojiContainerRef = useRef(null);
+   let triggerOptions = [
+        "They smiled at you",
+        "Their voice",
+        "The way they talk",
+      ];
   useEffect(() => {
     if (editItem) {
       setFeeling(editItem.feelings || "");
       setMood(moods.find((m) => m.label === editItem.mood));
       setIntensity(editItem.intensity || "");
-      setTrigger(editItem.triggerReason || "");
       setPreferredActivity(editItem.preferredActivity || "");
       setPartnerReaction(editItem.partnerImpact || "");
-      setSelectedOption(editItem.triggerReason || "");
+
+      // Trigger reason logic
+     
+      if (triggerOptions.includes(editItem.triggerReason)) {
+        setSelectedOption(editItem.triggerReason);
+        setTrigger(editItem.triggerReason);
+      } else if (editItem.triggerReason) {
+        setSelectedOption("Custom"); 
+        setTrigger(editItem.triggerReason); 
+      } else {
+        setSelectedOption("");
+        setTrigger("");
+      }
     }
   }, [editItem]);
 
-  const triggerOptions = [
-    "They smiled at you",
-    "Their voice",
-    "The way they talk",
-  ];
+  
 
   useEffect(() => {
     if (!show) {
@@ -60,53 +72,49 @@ const EmotionModal = ({ show, handleClose, fetchEmotionData, editItem }) => {
   }, [show]);
 
   const handleSubmit = async () => {
-    if (editItem) {
-      alert("thode din ruko, edit item ka code likhna baaki hai");
-      return;
-    }
-    const newEntry = {
-      user_Id: JSON.parse(localStorage.getItem("user"))?.user_Id,
-      feelings: feeling.trim(),
-      mood: mood?.label || "",
-      moodColor: mood?.color || "#fcb1b1",
-      intensity,
-      triggerReason,
-      createdDate: new Date().toLocaleDateString(),
-      time: new Date().toLocaleTimeString(),
-      preferredActivity: preferredActivity.trim(),
-      partnerImpact: partnerReaction.trim(),
-    };
-
-    if (
-      !newEntry.user_Id ||
-      !newEntry.feelings ||
-      !newEntry.mood ||
-      !newEntry.intensity ||
-      !newEntry.triggerReason ||
-      !newEntry.preferredActivity ||
-      !newEntry.partnerImpact
-    ) {
-      alert("Please fill in all required fields.");
-      return;
-    }
-
     try {
       setLoading(true);
-      const response = await apiClient.post("/user/saveEmotionData", newEntry);
-      if (response.status === 200) {
-        console.log(
-          "Emotion data saved successfully!",
-          response.data.emotionCardDetails
+      const userId = JSON.parse(localStorage.getItem("user"))?.user_Id;
+      
+      if (!userId) {
+        throw new Error("User not authenticated");
+      }
+
+      const emotionData = {
+        user_Id: userId, // Make sure this matches exactly with what backend expects
+        feelings: feeling.trim(),
+        mood: mood?.label || "",
+        moodColor: mood?.color || "#fcb1b1",
+        intensity,
+        triggerReason,
+        preferredActivity: preferredActivity.trim(),
+        partnerImpact: partnerReaction.trim(),
+      };
+
+      let response;
+      if (editItem?._id) {
+        response = await apiClient.patch(
+          `/user/updateEmotionCard/${editItem._id}`,
+          {
+            ...emotionData,
+            _id: editItem._id
+          }
         );
-        // Re-fetch updated emotion data
-        // await fetchEmotionData(newEntry.user_Id);
+      } else {
+        response = await apiClient.post("/user/saveEmotionData", emotionData);
+      }
+
+      if (response.status === 200) {
         await fetchEmotionData();
-        // Call the parent handler to update state
-        handleClose(); // Close modal after success
+        handleClose();
       }
     } catch (error) {
       console.error("Failed to save emotion data:", error);
-      alert("Something went wrong. Please try again.");
+      if (error.response?.status === 403) {
+        alert("You don't have permission to update this emotion card.");
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
