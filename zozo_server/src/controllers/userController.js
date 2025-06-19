@@ -232,7 +232,7 @@ export const saveEotionCardData = async (req, res) => {
     partnerReacted,
     createdAt
   } = req.body;
-
+console.log("Saving emotion data for user:", user_Id);
   try {
     if (!user_Id ||
       !feelings ||
