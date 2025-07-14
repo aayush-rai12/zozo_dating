@@ -3,9 +3,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const mongoURL = process.env.MONGO_URL || "mongodb://localhost:27017/zozoDB";
+const mongoURL = process.env.MONGO_URL_atlas;
 
 mongoose.connect(mongoURL);
+
 
 const db = mongoose.connection;
 

@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import UserDetails from "../models/UserDetails.js";
+import UserDetails from "../models/userDetails.js";
 import EmotionCardEntry from "../models/emotionTableTracker.js";
 import bcrypt from "bcryptjs";
 import jwt, { decode } from "jsonwebtoken";

@@ -29,7 +29,7 @@
 
 /* Decorative Elements */
 .explore_header::before {
-  content: "test";
+  content: "";
   position: absolute;
   top: -50px;
   right: -50px;
