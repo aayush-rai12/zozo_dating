@@ -1,8 +1,7 @@
 /* Sidebar */
 .dashboard_sidebar {
   width: 280px;
-  background: linear-gradient(180deg, var(--primary-color), var(--primary-dark));
-  color: var(--white);
+  background: linear-gradient(400deg, #e100f4, #0028ff);  color: var(--white);
   padding: 30px 20px;
   display: flex;
   flex-direction: column;

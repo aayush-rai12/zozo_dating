@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./HomeModal.css"; 
+import "./HomeModal.css";
 
 const HomeModal = ({ show, handleClose }) => {
   return (

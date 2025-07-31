@@ -197,7 +197,7 @@ const EmotionModal = ({ show, handleClose, fetchEmotionData, editItem }) => {
           <Modal.Title>Share Your Feeling</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body style={{ padding: 0 }}>
+        <Modal.Body style={{ padding: 0 }} className="emotionModal_body">
           <div className="emotionModal_container">
             <div className="emotionModal_card">
               <Form>

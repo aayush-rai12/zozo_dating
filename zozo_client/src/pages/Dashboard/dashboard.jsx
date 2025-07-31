@@ -40,7 +40,7 @@ function Dashboard() {
       {/* Main Content */}
       <main className="dashboard_main">
         {/* Header */}
-        <Header />
+        <Header profile_Image = {"https://res.cloudinary.com/dyn6ocrbi/image/upload/v1753627258/register_User_Images/uuumzhayrk9ygcbtndh0.jpg"}/>
 
         {/* Welcome Message */}
         <WelcomeMessage />

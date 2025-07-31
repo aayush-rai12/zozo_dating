@@ -1,0 +1,205 @@
+/* profileCompletion.css */
+
+/* Base Modal Styling */
+.profile-completion-modal .modal-content {
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.profile-completion-modal .modal-header {
+  background: linear-gradient(180deg, #e100f4, #0028ff);
+  color: white;
+  border-bottom: none;
+  padding: 1.5rem;
+}
+
+.modal-title {
+  font-weight: 600;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-completion-modal .profile-completion-body {
+  padding: 2rem;
+  background-color: #fff9fb;
+}
+
+.profile-completion-modal .profile-completion-footer {
+  border-top: none;
+  padding: 1.2rem 2rem;
+  background-color: #fff9fb;
+  display: flex;
+  justify-content: center;
+}
+
+/* Form Sections */
+.form-section {
+  margin-bottom: 1.8rem;
+}
+
+.form-section label {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+  color: #3a0a2a;
+  font-size: 0.95rem;
+}
+
+/* Input Fields */
+input[type="text"],
+.profile-bio {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #e0c8d4;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  /* background-color: rgba(255, 255, 255, 0.8); */
+}
+
+input[type="text"]:focus,
+.profile-bio:focus {
+  outline: none;
+  border-color: #ff2d6d;
+  box-shadow: 0 0 0 3px rgba(255, 45, 109, 0.15);
+}
+
+.profile-bio {
+  min-height: 130px;
+  resize: vertical;
+}
+
+/* File Input */
+input[type="file"] {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px dashed #e0c8d4;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+}
+
+/* Tagify Input */
+.tagify {
+  --tags-border-color: #e0c8d4;
+  --tag-bg: #ff2d6d;
+  --tag-hover: #ff5285;
+  --tag-text-color: white;
+  --tag-remove-btn-color: white;
+  --tag-remove-bg: rgba(255, 255, 255, 0.2);
+  --tag-invalid-color: #ff4d4d;
+  --tag-invalid-bg: #ffe6e6;
+  --input-color: #3a0a2a;
+  width: 100%;
+  border-radius: 12px;
+  padding: 0.8rem;
+  min-height: 48px;
+  transition: all 0.3s;
+}
+
+.tagify__dropdown {
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+/* Personality Questions */
+.personality-question {
+  margin-bottom: 1.5rem;
+}
+
+.personality-question p {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #3a0a2a;
+}
+
+/* Helper Text */
+.form_hint_insta {
+  font-size: 0.8rem;
+  color: #9e7a9a;
+  margin-top: 0.5rem;
+}
+
+.char-counter {
+  text-align: right;
+  font-size: 0.8rem;
+  color: #9e7a9a;
+  margin-top: 0.5rem;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.7rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary {
+  background-color: white;
+  color: #ff2d6d;
+  border: 2px solid #ff2d6d;
+}
+
+.btn-secondary:hover {
+  background-color: #fff0f5;
+  color: #000000;
+
+}
+
+.profile-completion-save-btn {
+  background: linear-gradient(135deg, #ff2d6d, #c644fc);
+  border: 2px solid #7d5252!important;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-completion-save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(198, 68, 252, 0.3);
+}
+
+.profile-completion-save-btn:disabled {
+  background: #e0c8d4;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Loading Animation */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.profile-completion-save-btn:disabled::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.3), 
+    transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  .modal-content {
+    margin: 0.5rem;
+  }
+  
+  .modal-header,
+  .profile-completion-body,
+  .profile-completion-footer {
+    padding: 1rem;
+  }
+}

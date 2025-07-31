@@ -10,7 +10,7 @@
 .custom-modal .modal-content {
   text-align: center;
   margin: auto;
-  background-image: url('../../../assets/images/loveBgm3.jpg')!important; 
+  background-image: url('../../../../assets/images/loveBgm3.jpg')!important; 
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

@@ -7,7 +7,7 @@ import imgbg0 from '../../assets/images/love.png';
 import testIMG1 from '../../assets/images/loveBgm6.jpg';
 import testIMG2 from '../../assets/images/loveBgm4.jpg';
 import testIMG3 from '../../assets/images/loveBgm3.jpg';
-import HomeModal from "../../components/UI/Modal/homeModal";
+import HomeModal from "../../components/UI/Modal/HomeModal/homeModal";
 const HomeSection = () => {
   useEffect(() => {
     AOS.init({ duration: 1200 });

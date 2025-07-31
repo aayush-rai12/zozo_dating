@@ -73,10 +73,27 @@
   margin-right: 10px;
   font-weight: bold;
 }
+.add_button {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.add_button:hover {
+  background-color: var(--secondary-color);
+}
 
 .todo_list li:not(.completed):before {
   content: "•";
   color: var(--warning);
   margin-right: 10px;
   font-weight: bold;
+}
+
+.todo_list li.pending span {
+  flex-grow: 1;
 }
