@@ -87,10 +87,7 @@ const Register = () => {
         password,
       };
 
-      const response = await apiClient.post(
-        "user/register",
-        userRegistrationData
-      );
+      const response = await apiClient.post("auth/register", userRegistrationData);
       // Set success message
       setMessage(response?.data?.message || "User registered successfully!");
       setMessageType("success");

@@ -1,5 +1,5 @@
 import express from 'express';
-import {registerUser, loginUser, userDetails, getUserDetails, saveEotionCardData, getEmotionData, toggleEmotionStatus, deleteEmotionCard, updateEmotionCard} from '../controllers/userController.js';
+import {registerUser, loginUser, userDetails, getUserDetails, saveEotionCardData, getEmotionData, toggleEmotionStatus, deleteEmotionCard, updateEmotionCard, saveProfileCompletion} from '../controllers/userController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import multer from 'multer';
 import upload from "../config/multer.js";
@@ -12,17 +12,19 @@ router.post('/login', loginUser);
 router.post('/userDetails',upload.array("photos", 6), userDetails);
 
 // Get user details by ID
-// This route is protected, meaning it requires authentication
 router.get('/getUserById/:id', getUserDetails);
+
 // Save user Emotion Tracker Data
 router.post('/saveEmotionData', saveEotionCardData);
 
+// Get emotion data for a specific user
 router.get('/getEmotionData/:userId', getEmotionData);
+
 // update the emotion card isPublic or not
 router.patch('/toggleEmotionStatus/:id',toggleEmotionStatus);
 router.patch('/updateEmotionCard/:id', updateEmotionCard);
 router.delete('/deleteEmotionCard/:id', deleteEmotionCard);
 
-
-
+// save ProfileCompleteion data for a specific user
+router.get('/saveProfileCompletion', saveProfileCompletion);
 export default router;

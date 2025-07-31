@@ -409,3 +409,8 @@ export const updateEmotionCard = async (req, res) => {
     });
   }
 };
+
+// save ProfileCompletion data
+export const saveProfileCompletion = async (req, res) => {
+  res.status(200).json({"message": "Profile completion data saved successfully test" });
+}

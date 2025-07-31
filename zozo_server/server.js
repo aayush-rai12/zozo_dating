@@ -20,11 +20,7 @@ app.get('/', (req, res) => {
   res.send('Hello from zozo backend!');
 });
 
-app.use("/api/auth", (req, res) => {
-  console.log("Auth route hit2");
-  // Authentication routes would go here
-  res.send('Auth route created');
-});
+app.use("/api/auth", userRoutes);
 
 app.use("/api/user",userRoutes)
 

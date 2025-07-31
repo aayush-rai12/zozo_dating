@@ -44,7 +44,7 @@ const Login = () => {
         password: password,
       };
       try {
-        const response = await apiClient.post("/user/login", user);
+        const response = await apiClient.post("/auth/login", user);
         console.log("after login ", response.data);
         if (response?.data?.message) {
           setMessage(response?.data?.message);
