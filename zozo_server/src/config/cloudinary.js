@@ -12,8 +12,6 @@ cloudinary.config({
 
 // function for upload image on clodinary 
 export const uploadImage = async(filePath, folderName) => {
-  console.log(folderName);
-  console.log(filePath);
   
   if (!filePath) {
     console.error('Cloudinary upload error: filePath is missing or undefined');

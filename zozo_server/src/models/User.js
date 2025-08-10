@@ -22,6 +22,19 @@ const userSchema = new mongoose.Schema({
     required: true 
     
   },
+    // 🔥 New streak fields
+  lastLoginDate: { 
+    type: Date, 
+    default: null 
+  },
+  currentStreak: { 
+    type: Number, 
+    default: 0 
+  },
+  highestStreak: { 
+    type: Number, 
+    default: 0 
+  }
 });
 const User = mongoose.model("registered_User", userSchema);
 export default User;

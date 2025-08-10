@@ -53,9 +53,6 @@ const emotionTableSchema = new mongoose.Schema(
 );
 
 // Create model
-const emotionCardDetails = mongoose.model(
-  "emotion_Card_Details",
-  emotionTableSchema
-);
+const emotionCardDetails = mongoose.model("emotion_Card_Details", emotionTableSchema);
 
 export default emotionCardDetails;

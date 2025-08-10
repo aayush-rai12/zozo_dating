@@ -40,14 +40,14 @@ function Dashboard() {
       {/* Main Content */}
       <main className="dashboard_main">
         {/* Header */}
-        <Header profile_Image = {"https://res.cloudinary.com/dyn6ocrbi/image/upload/v1753627258/register_User_Images/uuumzhayrk9ygcbtndh0.jpg"}/>
+        <Header profile_Image = {"https://res.cloudinary.com/dyn6ocrbi/image/upload/v1754808616/user_dp_images/jaystigjntorqzy0cjqv.png"}/>
 
         {/* Welcome Message */}
         <WelcomeMessage />
         {/* Welcome Message end */}
 
         {/* User Info */}
-        <UserProfileCard />
+        <UserProfileCard  />
         {/* User Info end */}
 
         {/* Profile Completion */}

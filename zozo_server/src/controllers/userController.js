@@ -1,11 +1,12 @@
 import User from "../models/User.js";
-import UserDetails from "../models/userDetails.js";
+import UserDetails from "../models/UserDetails.js";
 import EmotionCardEntry from "../models/emotionTableTracker.js";
+import ProfileCompletion from "../models/ProfileCompletion.js";
 import bcrypt from "bcryptjs";
 import jwt, { decode } from "jsonwebtoken";
 import dotenv from "dotenv";
 import { uploadImage, deleteImage } from "../config/cloudinary.js";
-
+import * as date from "date-and-time";
 // User registration controller
 export const registerUser = async (req, res) => {
   console.log("User registration request received");
@@ -64,6 +65,7 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    //Find user by email
     const user = await User.findOne({ email });
     console.log(user || "User not found");
 
@@ -71,23 +73,60 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ message: "User not found" });
     }
 
-    //  Compare hashed password
+    //Compare password
     // const isMatch = await bcrypt.compare(password, user.password);
-    if (!password == user.password) {
+    if (password !== user.password) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    //  Generate JWT token
+    // 3️⃣ Streak logic
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // ignore time part
+
+    if (user.lastLoginDate) {
+      const lastLogin = new Date(user.lastLoginDate);
+      lastLogin.setHours(0, 0, 0, 0);
+
+      const diffDays = Math.floor((today - lastLogin) / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 1) {
+        user.currentStreak += 1; // continue streak
+      } else if (diffDays > 1) {
+        user.currentStreak = 1; // reset streak
+      }
+      // same day login -> streak unchanged
+    } else {
+      user.currentStreak = 1;
+    }
+
+    //Update highest streak
+    if (user.currentStreak > user.highestStreak) {
+      user.highestStreak = user.currentStreak;
+    }
+
+    //Update last login date
+    user.lastLoginDate = today;
+
+    //Milestone message
+    let milestoneMessage = `💪 You’ve logged in for ${user.currentStreak} days in a row!`;
+
+    if (user.currentStreak === 5)
+      milestoneMessage = "🔥 5 days in a row! Great job!";
+    else if (user.currentStreak === 10)
+      milestoneMessage = "💯 10 days without missing! Amazing!";
+    else if (user.currentStreak % 30 === 0 && user.currentStreak !== 0)
+      milestoneMessage = `🌟 ${user.currentStreak} days in a row! You're unstoppable!`;
+
+    await user.save();
+
+    //Generate JWT token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "3600",
+      expiresIn: "1d", // 1 day validity
     });
 
-    const decoded = jwt.decode(token);
-    console.log("Decoded JWT payload:", decoded);
-    console.log("Token generated:", token);
-
+    // Return response
     return res.status(200).json({
-      success: "success",
+      success: true,
       message: "User logged in successfully",
       user: {
         user_Id: user._id,
@@ -95,13 +134,16 @@ export const loginUser = async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         token,
+        streak: user.currentStreak,
+        highestStreak: user.highestStreak,
+        milestoneMessage,
       },
     });
   } catch (error) {
     console.error("Error during login:", error);
     return res
       .status(500)
-      .json({ success: "error", message: "Internal server error" });
+      .json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -201,10 +243,10 @@ export const userDetails = async (req, res) => {
 //getUserDetails
 export const getUserDetails = async (req, res) => {
   const { id } = req.params;
-  console.log("Aa gya kya", id);
+  // console.log("Aa gya kya", id);
   try {
     const userDetails = await UserDetails.findOne({ user_Id: id });
-    console.log("User details found:", userDetails);
+    // console.log("User details found:", userDetails);
     if (!userDetails) {
       return res.status(404).json({ message: "user Details not found" });
     }
@@ -230,11 +272,12 @@ export const saveEotionCardData = async (req, res) => {
     triggerReason,
     preferredActivity,
     partnerReacted,
-    createdAt
+    createdAt,
   } = req.body;
-console.log("Saving emotion data for user:", user_Id);
+  console.log("Saving emotion data for user:", user_Id);
   try {
-    if (!user_Id ||
+    if (
+      !user_Id ||
       !feelings ||
       !mood ||
       !moodColor ||
@@ -260,7 +303,7 @@ console.log("Saving emotion data for user:", user_Id);
       triggerReason,
       preferredActivity,
       partnerReacted,
-      createdAt: createdAt ? new Date(createdAt) : new Date()
+      createdAt: createdAt ? new Date(createdAt) : new Date(),
     });
     await newEntry.save();
 
@@ -280,38 +323,43 @@ export const getEmotionData = async (req, res) => {
   const { userId } = req.params;
   console.log("Fetching emotion data for user:", userId);
   try {
-    const emotionData = await EmotionCardEntry.find({ user_Id: userId }).select('-user_Id');
+    const emotionData = await EmotionCardEntry.find({ user_Id: userId }).select(
+      "-user_Id"
+    );
     console.log("Emotion data found:", emotionData);
     if (!emotionData || emotionData.length === 0) {
-      return res.status(404).json({ message: "No emotion data found for this user" });
+      return res
+        .status(404)
+        .json({ message: "No emotion data found for this user" });
     }
     return res.status(200).json({
       success: true,
       message: "Emotion data fetched successfully",
       emotionData: emotionData,
     });
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error fetching emotion data:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
 
-// update the user emotion card is visible to public or not 
+// update the user emotion card is visible to public or not
 export const toggleEmotionStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { isPublic } = req.body;
     console.log(isPublic, "isPublic value received");
-    if (typeof isPublic !== 'boolean') {
-      return res.status(400).json({ message: "isPublic must be a boolean value" });
+    if (typeof isPublic !== "boolean") {
+      return res
+        .status(400)
+        .json({ message: "isPublic must be a boolean value" });
     }
     const updatedEmotion = await EmotionCardEntry.findByIdAndUpdate(
       id,
       { isPublic },
       { new: true }
     );
-    console.log("new update",updatedEmotion);
+    console.log("new update", updatedEmotion);
     if (!updatedEmotion) {
       return res.status(404).json({ message: "Emotion entry not found" });
     }
@@ -319,7 +367,7 @@ export const toggleEmotionStatus = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Status updated successfully",
-      emotionData: updatedEmotion
+      emotionData: updatedEmotion,
     });
   } catch (error) {
     console.error("Error updating emotion status:", error);
@@ -338,7 +386,7 @@ export const deleteEmotionCard = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Emotion entry deleted successfully",
-      emotionData: deletedEmotion
+      emotionData: deletedEmotion,
     });
   } catch (error) {
     console.error("Error deleting emotion card:", error);
@@ -357,17 +405,17 @@ export const updateEmotionCard = async (req, res) => {
     if (!id || !user_Id) {
       return res.status(400).json({
         success: false,
-        message: "Emotion card ID and user ID are required"
+        message: "Emotion card ID and user ID are required",
       });
     }
 
     // Find the existing emotion card
     const existingCard = await EmotionCardEntry.findById(id);
-    
+
     if (!existingCard) {
       return res.status(404).json({
         success: false,
-        message: "Emotion card not found"
+        message: "Emotion card not found",
       });
     }
 
@@ -375,42 +423,95 @@ export const updateEmotionCard = async (req, res) => {
     if (existingCard.user_Id.toString() !== user_Id) {
       return res.status(403).json({
         success: false,
-        message: "You don't have permission to update this emotion card"
+        message: "You don't have permission to update this emotion card",
       });
     }
 
     // Proceed with update if authorized
     const updatedCard = await EmotionCardEntry.findByIdAndUpdate(
       id,
-      { 
+      {
         $set: {
           ...updateFields,
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       },
-      { 
+      {
         new: true,
-        runValidators: true
+        runValidators: true,
       }
     );
 
     return res.status(200).json({
       success: true,
       message: "Emotion card updated successfully",
-      emotionCardDetails: updatedCard
+      emotionCardDetails: updatedCard,
     });
-
   } catch (error) {
     console.error("Update emotion card error:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to update emotion card",
-      error: error.message
+      error: error.message,
     });
   }
 };
 
 // save ProfileCompletion data
 export const saveProfileCompletion = async (req, res) => {
-  res.status(200).json({"message": "Profile completion data saved successfully test" });
-}
+  try {
+    const { userId, id, data } = req.body;
+    console.log("file", req);
+    if (!userId || !id || data === undefined) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+    const sectionData = { id, data };
+    if (id === "profilePhoto") {
+      const result = await uploadImage(data, "user_dp_images"); // base64 data bhejna hai
+      sectionData.data = result.secure_url; // Sirf URL save karo
+    }
+    // Dynamically update based on section ID (like interests, preferences, etc.)
+    console.log("Saving profile completion for user:", sectionData);
+    const updatedProfile = await ProfileCompletion.findOneAndUpdate(
+      { userId },
+      { $set: { [id]: sectionData } },
+      { new: true, upsert: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: `${id} section saved successfully`,
+      profileCompletion: updatedProfile,
+    });
+  } catch (error) {
+    console.error("Error in profile completion:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Get profile completion data for a specific user
+export const getProfileCompletionData = async (req, res) => {
+  console.log("Fetching profile completion data", req.params.userId);
+  const { userId } = req.params;
+  try {
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const profileCompletion = await ProfileCompletion.findOne({ userId });
+    if (!profileCompletion) {
+      return res
+        .status(404)
+        .json({ message: "Profile completion data not found" });
+    }
+    console.log("Profile completion data found:", profileCompletion);
+    return res.status(200).json({
+      success: true,
+      message: "Profile completion data fetched successfully",
+      profileCompletion: profileCompletion,
+    });
+  } catch (error) {
+    console.error("Error fetching profile completion data:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};

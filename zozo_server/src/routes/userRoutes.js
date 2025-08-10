@@ -1,5 +1,5 @@
 import express from 'express';
-import {registerUser, loginUser, userDetails, getUserDetails, saveEotionCardData, getEmotionData, toggleEmotionStatus, deleteEmotionCard, updateEmotionCard, saveProfileCompletion} from '../controllers/userController.js';
+import {registerUser, loginUser, userDetails, getUserDetails, saveEotionCardData, getEmotionData, toggleEmotionStatus, deleteEmotionCard, updateEmotionCard, saveProfileCompletion, getProfileCompletionData} from '../controllers/userController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import multer from 'multer';
 import upload from "../config/multer.js";
@@ -26,5 +26,8 @@ router.patch('/updateEmotionCard/:id', updateEmotionCard);
 router.delete('/deleteEmotionCard/:id', deleteEmotionCard);
 
 // save ProfileCompleteion data for a specific user
-router.get('/saveProfileCompletion', saveProfileCompletion);
+router.post('/saveProfileCompletion', saveProfileCompletion);
+// Get profile completion data for a specific user
+router.get('/getProfileCompletionData/:userId', getProfileCompletionData);
+//
 export default router;
